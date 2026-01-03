@@ -1,0 +1,13 @@
+name: DIABLO
+version: '1.0.0-SNAPSHOT'
+main: com.sanctuary.DiabloPlugin
+api-version: 1.20
+description: "Project Sanctuary - 디아블로 스타일 RPG 엔진"
+authors: [Sanctuary Dev Team]
+website: https://github.com/sanctuary-project
+
+commands:
+  sanctuary:
+    description: "Sanctuary 시스템 메인 명령어"
+    aliases: [dia, diablo]
+    usage: "/sanctuary <reload|debug>"
