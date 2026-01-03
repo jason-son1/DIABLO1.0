@@ -1,0 +1,210 @@
+[
+    {
+        "id": "BARBARIAN",
+        "name": "야만용사",
+        "description": "분노를 연료로 사용하는 근접 전사. 4개의 무기를 동시에 장착합니다.",
+        "mainStat": "STRENGTH",
+        "resource": {
+            "type": "FURY",
+            "name": "분노",
+            "max": 100,
+            "regenPerSecond": 0,
+            "regenOnHit": 10,
+            "regenOnKill": 20
+        },
+        "preferredWeapons": [
+            "TWO_HANDED_SWORD",
+            "TWO_HANDED_AXE",
+            "TWO_HANDED_MACE",
+            "ONE_HANDED_SWORD",
+            "ONE_HANDED_AXE",
+            "ONE_HANDED_MACE"
+        ],
+        "preferredArmor": [
+            "HEAVY_ARMOR"
+        ],
+        "baseStats": {
+            "STRENGTH": 10,
+            "DEXTERITY": 8,
+            "INTELLIGENCE": 6,
+            "WILLPOWER": 7,
+            "MAX_HP": 150,
+            "ARMOR": 50
+        },
+        "classMechanic": {
+            "type": "ARSENAL",
+            "description": "무기 전문성 시스템. 4개 무기를 장착하고 스킬마다 다른 무기 사용."
+        }
+    },
+    {
+        "id": "ROGUE",
+        "name": "도적",
+        "description": "빠른 속도와 연계 공격으로 적을 제압하는 암살자.",
+        "mainStat": "DEXTERITY",
+        "resource": {
+            "type": "ENERGY",
+            "name": "기력",
+            "max": 100,
+            "regenPerSecond": 5,
+            "regenOnHit": 0,
+            "regenOnKill": 0
+        },
+        "preferredWeapons": [
+            "DAGGER",
+            "SWORD",
+            "BOW",
+            "CROSSBOW"
+        ],
+        "preferredArmor": [
+            "LIGHT_ARMOR"
+        ],
+        "baseStats": {
+            "STRENGTH": 7,
+            "DEXTERITY": 10,
+            "INTELLIGENCE": 7,
+            "WILLPOWER": 6,
+            "MAX_HP": 100,
+            "ARMOR": 30
+        },
+        "classMechanic": {
+            "type": "SPECIALIZATION",
+            "description": "전문화 선택: 연계 점수, 내면의 시야, 준비 중 하나."
+        }
+    },
+    {
+        "id": "SORCERER",
+        "name": "원소술사",
+        "description": "화염, 냉기, 번개의 원소 마법을 다루는 마법사.",
+        "mainStat": "INTELLIGENCE",
+        "resource": {
+            "type": "MANA",
+            "name": "마나",
+            "max": 100,
+            "regenPerSecond": 3,
+            "regenOnHit": 0,
+            "regenOnKill": 0
+        },
+        "preferredWeapons": [
+            "STAFF",
+            "WAND",
+            "FOCUS"
+        ],
+        "preferredArmor": [
+            "CLOTH_ARMOR"
+        ],
+        "baseStats": {
+            "STRENGTH": 5,
+            "DEXTERITY": 7,
+            "INTELLIGENCE": 10,
+            "WILLPOWER": 8,
+            "MAX_HP": 80,
+            "ARMOR": 20
+        },
+        "classMechanic": {
+            "type": "ENCHANTMENT",
+            "description": "마법부여 슬롯. 스킬을 패시브로 장착하여 자동 발동 효과 획득."
+        }
+    },
+    {
+        "id": "NECROMANCER",
+        "name": "강령술사",
+        "description": "죽음의 마법과 언데드 소환을 다루는 어둠의 마법사.",
+        "mainStat": "INTELLIGENCE",
+        "resource": {
+            "type": "ESSENCE",
+            "name": "정수",
+            "max": 100,
+            "regenPerSecond": 0,
+            "regenOnHit": 5,
+            "regenOnKill": 15
+        },
+        "preferredWeapons": [
+            "SCYTHE",
+            "WAND",
+            "FOCUS",
+            "SHIELD"
+        ],
+        "preferredArmor": [
+            "CLOTH_ARMOR"
+        ],
+        "baseStats": {
+            "STRENGTH": 6,
+            "DEXTERITY": 6,
+            "INTELLIGENCE": 10,
+            "WILLPOWER": 8,
+            "MAX_HP": 90,
+            "ARMOR": 25
+        },
+        "classMechanic": {
+            "type": "BOOK_OF_THE_DEAD",
+            "description": "망자의 서. 소환수를 커스터마이징하거나 희생하여 버프 획득."
+        }
+    },
+    {
+        "id": "DRUID",
+        "name": "드루이드",
+        "description": "자연의 힘과 변신 능력을 사용하는 전사.",
+        "mainStat": "WILLPOWER",
+        "resource": {
+            "type": "SPIRIT",
+            "name": "영혼",
+            "max": 100,
+            "regenPerSecond": 0,
+            "regenOnHit": 8,
+            "regenOnKill": 10
+        },
+        "preferredWeapons": [
+            "STAFF",
+            "TWO_HANDED_MACE",
+            "TOTEM"
+        ],
+        "preferredArmor": [
+            "MEDIUM_ARMOR"
+        ],
+        "baseStats": {
+            "STRENGTH": 8,
+            "DEXTERITY": 6,
+            "INTELLIGENCE": 7,
+            "WILLPOWER": 10,
+            "MAX_HP": 120,
+            "ARMOR": 40
+        },
+        "classMechanic": {
+            "type": "SPIRIT_BOONS",
+            "description": "영혼 은총. 4가지 동물 영혼에게 공물을 바쳐 패시브 획득."
+        }
+    },
+    {
+        "id": "SPIRITBORN",
+        "name": "혼령사",
+        "description": "4가지 혼령(재규어, 독수리, 고릴라, 지네)의 힘을 빌리는 전사.",
+        "mainStat": "DEXTERITY",
+        "resource": {
+            "type": "VIGOR",
+            "name": "기력",
+            "max": 100,
+            "regenPerSecond": 0,
+            "regenOnHit": 15,
+            "regenOnKill": 0
+        },
+        "preferredWeapons": [
+            "GLAIVE",
+            "QUARTERSTAFF"
+        ],
+        "preferredArmor": [
+            "MEDIUM_ARMOR"
+        ],
+        "baseStats": {
+            "STRENGTH": 8,
+            "DEXTERITY": 10,
+            "INTELLIGENCE": 6,
+            "WILLPOWER": 7,
+            "MAX_HP": 110,
+            "ARMOR": 35
+        },
+        "classMechanic": {
+            "type": "SPIRIT_HALL",
+            "description": "혼령 전당. 주 혼령과 보조 혼령을 선택하여 스킬 속성 변환."
+        }
+    }
+]

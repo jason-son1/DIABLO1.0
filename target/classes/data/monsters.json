@@ -1,0 +1,260 @@
+{
+    "families": [
+        {
+            "id": "FALLEN",
+            "name": "몰락자",
+            "description": "겁 많지만 무리 지어 공격하는 소형 악마",
+            "habitat": [
+                "DESERT",
+                "WASTELAND"
+            ],
+            "dropCategories": [
+                "AXE",
+                "STAFF",
+                "GLOVES"
+            ],
+            "members": [
+                {
+                    "type": "FALLEN_GRUNT",
+                    "name": "몰락자",
+                    "role": "MELEE",
+                    "baseHealth": 50,
+                    "baseDamage": 10,
+                    "behavior": "COWARD",
+                    "ai": {
+                        "fleeOnAllyDeath": true,
+                        "fleeRadius": 10,
+                        "fleeDuration": 3000
+                    }
+                },
+                {
+                    "type": "FALLEN_SHAMAN",
+                    "name": "몰락자 샤먼",
+                    "role": "SUPPORT",
+                    "baseHealth": 40,
+                    "baseDamage": 15,
+                    "behavior": "RESURRECTOR",
+                    "ai": {
+                        "keepDistance": 10,
+                        "resurrectRadius": 15,
+                        "resurrectCooldown": 5000
+                    },
+                    "skills": [
+                        "FIREBALL",
+                        "RESURRECT_FALLEN"
+                    ]
+                },
+                {
+                    "type": "FALLEN_LUNATIC",
+                    "name": "몰락자 광인",
+                    "role": "SUICIDE",
+                    "baseHealth": 30,
+                    "baseDamage": 50,
+                    "behavior": "KAMIKAZE",
+                    "ai": {
+                        "chargeSpeed": 1.5,
+                        "explosionRadius": 4,
+                        "explosionDamage": 100
+                    }
+                }
+            ]
+        },
+        {
+            "id": "SKELETON",
+            "name": "해골",
+            "description": "무덤에서 되살아난 언데드 전사",
+            "habitat": [
+                "DUNGEON",
+                "GRAVEYARD",
+                "NETHER"
+            ],
+            "dropCategories": [
+                "CROSSBOW",
+                "SWORD",
+                "SHIELD"
+            ],
+            "members": [
+                {
+                    "type": "SKELETON_WARRIOR",
+                    "name": "해골 전사",
+                    "role": "MELEE",
+                    "baseHealth": 60,
+                    "baseDamage": 15
+                },
+                {
+                    "type": "SKELETON_ARCHER",
+                    "name": "해골 궁수",
+                    "role": "RANGED",
+                    "baseHealth": 40,
+                    "baseDamage": 12,
+                    "ai": {
+                        "keepDistance": 15,
+                        "projectileSpeed": 1.5
+                    }
+                },
+                {
+                    "type": "SKELETON_SHIELD",
+                    "name": "해골 방패병",
+                    "role": "TANK",
+                    "baseHealth": 100,
+                    "baseDamage": 8,
+                    "ai": {
+                        "blockFrontalDamage": 0.8,
+                        "blockAngle": 120
+                    }
+                },
+                {
+                    "type": "SKELETON_CAPTAIN",
+                    "name": "해골 대장",
+                    "role": "ELITE",
+                    "baseHealth": 200,
+                    "baseDamage": 25,
+                    "isElite": true,
+                    "skills": [
+                        "SUMMON_MINIONS",
+                        "WALLER"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "CANNIBAL",
+            "name": "식인종",
+            "description": "야만적인 근접 전사. 기절 공격 특화.",
+            "habitat": [
+                "MESA",
+                "DESERT"
+            ],
+            "dropCategories": [
+                "AXE",
+                "HELMET"
+            ],
+            "members": [
+                {
+                    "type": "CANNIBAL_CLEAVER",
+                    "name": "식인종 도살자",
+                    "role": "BRUISER",
+                    "baseHealth": 120,
+                    "baseDamage": 30,
+                    "ai": {
+                        "stunChance": 0.2,
+                        "stunDuration": 1500
+                    }
+                },
+                {
+                    "type": "CANNIBAL_LEAPER",
+                    "name": "식인종 도약자",
+                    "role": "ASSASSIN",
+                    "baseHealth": 80,
+                    "baseDamage": 25,
+                    "ai": {
+                        "leapMinDistance": 8,
+                        "leapMaxDistance": 15,
+                        "leapDamageRadius": 3
+                    },
+                    "skills": [
+                        "LEAP_ATTACK"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "SPIDER",
+            "name": "거미",
+            "description": "독과 거미줄로 플레이어를 속박",
+            "habitat": [
+                "DARK_FOREST",
+                "CAVE"
+            ],
+            "dropCategories": [
+                "CHESTPLATE"
+            ],
+            "members": [
+                {
+                    "type": "SPIDER_SWARMER",
+                    "name": "거미 떼",
+                    "role": "SWARM",
+                    "baseHealth": 20,
+                    "baseDamage": 5,
+                    "spawnCount": 5
+                },
+                {
+                    "type": "PLAGUE_SPIDER",
+                    "name": "역병 거미",
+                    "role": "DOT",
+                    "baseHealth": 60,
+                    "baseDamage": 10,
+                    "ai": {
+                        "poisonOnDeath": true,
+                        "poisonRadius": 3,
+                        "poisonDuration": 5000
+                    }
+                },
+                {
+                    "type": "SPIDER_HOST",
+                    "name": "거미 숙주",
+                    "role": "SPAWNER",
+                    "baseHealth": 150,
+                    "baseDamage": 20,
+                    "ai": {
+                        "spawnOnDeath": "SPIDER_SWARMER",
+                        "spawnCount": 8
+                    },
+                    "skills": [
+                        "WEB_SHOT"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "GOATMAN",
+            "name": "염소인간",
+            "description": "산악 지대의 종족. 샤먼 버프 특화.",
+            "habitat": [
+                "MOUNTAIN",
+                "SNOWY_PEAKS"
+            ],
+            "dropCategories": [
+                "AXE",
+                "STAFF"
+            ],
+            "members": [
+                {
+                    "type": "KHAZRA_WARRIOR",
+                    "name": "혈족 전사",
+                    "role": "MELEE",
+                    "baseHealth": 80,
+                    "baseDamage": 18
+                },
+                {
+                    "type": "KHAZRA_IMPALER",
+                    "name": "혈족 투창병",
+                    "role": "RANGED",
+                    "baseHealth": 50,
+                    "baseDamage": 15,
+                    "ai": {
+                        "keepDistance": 12
+                    }
+                },
+                {
+                    "type": "KHAZRA_SHAMAN",
+                    "name": "혈족 샤먼",
+                    "role": "BUFFER",
+                    "baseHealth": 60,
+                    "baseDamage": 12,
+                    "ai": {
+                        "buffRadius": 15,
+                        "buffDamageIncrease": 0.3
+                    },
+                    "skills": [
+                        "BLOODLUST_AURA"
+                    ]
+                }
+            ]
+        }
+    ],
+    "eliteSpawnChance": 0.05,
+    "eliteHealthMultiplier": 3.0,
+    "eliteDamageMultiplier": 1.5,
+    "eliteScaleMultiplier": 1.2
+}

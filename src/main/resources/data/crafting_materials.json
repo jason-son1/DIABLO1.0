@@ -1,0 +1,146 @@
+{
+    "materials": [
+        {
+            "id": "OBDUCITE",
+            "name": "옵두사이트",
+            "tier": 1,
+            "description": "나락 1-30층에서 획득 가능한 명품화 재료",
+            "icon": "PRISMARINE_SHARD",
+            "rarity": "RARE",
+            "pitFloorMin": 1,
+            "pitFloorMax": 30,
+            "usedForRanks": [
+                1,
+                2,
+                3,
+                4
+            ]
+        },
+        {
+            "id": "INGOLITH",
+            "name": "잉골리스",
+            "tier": 2,
+            "description": "나락 31-60층에서 획득 가능한 명품화 재료",
+            "icon": "GOLD_INGOT",
+            "rarity": "EPIC",
+            "pitFloorMin": 31,
+            "pitFloorMax": 60,
+            "usedForRanks": [
+                5,
+                6,
+                7,
+                8
+            ]
+        },
+        {
+            "id": "NEATHIRON",
+            "name": "니스아이언",
+            "tier": 3,
+            "description": "나락 61층 이상에서 획득 가능한 명품화 재료",
+            "icon": "NETHERITE_INGOT",
+            "rarity": "LEGENDARY",
+            "pitFloorMin": 61,
+            "pitFloorMax": 999,
+            "usedForRanks": [
+                9,
+                10,
+                11,
+                12
+            ]
+        }
+    ],
+    "conversionRates": [
+        {
+            "from": "NEATHIRON",
+            "to": "INGOLITH",
+            "ratio": 3
+        },
+        {
+            "from": "INGOLITH",
+            "to": "OBDUCITE",
+            "ratio": 3
+        }
+    ],
+    "masterworkingCosts": [
+        {
+            "rank": 1,
+            "material": "OBDUCITE",
+            "amount": 5,
+            "gold": 100000
+        },
+        {
+            "rank": 2,
+            "material": "OBDUCITE",
+            "amount": 8,
+            "gold": 150000
+        },
+        {
+            "rank": 3,
+            "material": "OBDUCITE",
+            "amount": 12,
+            "gold": 200000
+        },
+        {
+            "rank": 4,
+            "material": "OBDUCITE",
+            "amount": 18,
+            "gold": 300000
+        },
+        {
+            "rank": 5,
+            "material": "INGOLITH",
+            "amount": 5,
+            "gold": 500000
+        },
+        {
+            "rank": 6,
+            "material": "INGOLITH",
+            "amount": 8,
+            "gold": 700000
+        },
+        {
+            "rank": 7,
+            "material": "INGOLITH",
+            "amount": 12,
+            "gold": 900000
+        },
+        {
+            "rank": 8,
+            "material": "INGOLITH",
+            "amount": 18,
+            "gold": 1200000
+        },
+        {
+            "rank": 9,
+            "material": "NEATHIRON",
+            "amount": 5,
+            "gold": 2000000
+        },
+        {
+            "rank": 10,
+            "material": "NEATHIRON",
+            "amount": 8,
+            "gold": 3000000
+        },
+        {
+            "rank": 11,
+            "material": "NEATHIRON",
+            "amount": 12,
+            "gold": 5000000
+        },
+        {
+            "rank": 12,
+            "material": "NEATHIRON",
+            "amount": 18,
+            "gold": 10000000
+        }
+    ],
+    "resetCost": {
+        "goldMultiplier": 5,
+        "materialMultiplier": 2
+    },
+    "salvageReturns": {
+        "materialPercentage": 0.25,
+        "goldPercentage": 0.10
+    }
+}

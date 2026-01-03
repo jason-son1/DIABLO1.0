@@ -1,0 +1,302 @@
+{
+    "categories": [
+        {
+            "id": "WEAPON",
+            "name": "무기",
+            "description": "무기 전용 담금질 옵션",
+            "allowedSlots": [
+                "WEAPON"
+            ],
+            "manuals": [
+                {
+                    "id": "ELEMENTAL_SURGE",
+                    "name": "원소 쇄도",
+                    "affixes": [
+                        {
+                            "statKey": "FIRE_DAMAGE_ON_HIT",
+                            "minValue": 50,
+                            "maxValue": 150,
+                            "description": "공격 시 화염 피해 추가"
+                        },
+                        {
+                            "statKey": "COLD_DAMAGE_ON_HIT",
+                            "minValue": 50,
+                            "maxValue": 150,
+                            "description": "공격 시 냉기 피해 추가"
+                        },
+                        {
+                            "statKey": "LIGHTNING_DAMAGE_ON_HIT",
+                            "minValue": 50,
+                            "maxValue": 150,
+                            "description": "공격 시 번개 피해 추가"
+                        }
+                    ]
+                },
+                {
+                    "id": "WORLDLY_FINESSE",
+                    "name": "세속적 기교",
+                    "affixes": [
+                        {
+                            "statKey": "DAMAGE_TO_CLOSE",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "근거리 적에게 피해 증가"
+                        },
+                        {
+                            "statKey": "DAMAGE_TO_DISTANT",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "원거리 적에게 피해 증가"
+                        },
+                        {
+                            "statKey": "DAMAGE_TO_SLOWED",
+                            "minValue": 0.10,
+                            "maxValue": 0.20,
+                            "isPercent": true,
+                            "description": "느려진 적에게 피해 증가"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "OFFENSIVE",
+            "name": "공격",
+            "description": "공격 속성 담금질 옵션",
+            "allowedSlots": [
+                "WEAPON",
+                "GLOVES",
+                "AMULET",
+                "RING"
+            ],
+            "manuals": [
+                {
+                    "id": "NATURAL_FINESSE",
+                    "name": "자연의 기교",
+                    "affixes": [
+                        {
+                            "statKey": "CRIT_CHANCE_BONUS",
+                            "minValue": 0.03,
+                            "maxValue": 0.08,
+                            "isPercent": true,
+                            "description": "치명타 확률 증가"
+                        },
+                        {
+                            "statKey": "ATTACK_SPEED_BONUS",
+                            "minValue": 0.05,
+                            "maxValue": 0.12,
+                            "isPercent": true,
+                            "description": "공격 속도 증가"
+                        },
+                        {
+                            "statKey": "LUCKY_HIT_CHANCE",
+                            "minValue": 0.05,
+                            "maxValue": 0.15,
+                            "isPercent": true,
+                            "description": "행운의 적중 확률 증가"
+                        }
+                    ]
+                },
+                {
+                    "id": "BLOOD_FINESSE",
+                    "name": "혈기",
+                    "affixes": [
+                        {
+                            "statKey": "BLEED_DAMAGE",
+                            "minValue": 0.15,
+                            "maxValue": 0.30,
+                            "isPercent": true,
+                            "description": "출혈 피해 증가"
+                        },
+                        {
+                            "statKey": "DAMAGE_OVER_TIME",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "지속 피해 증가"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "DEFENSIVE",
+            "name": "방어",
+            "description": "방어 속성 담금질 옵션",
+            "allowedSlots": [
+                "HELMET",
+                "CHESTPLATE",
+                "LEGGINGS",
+                "AMULET"
+            ],
+            "manuals": [
+                {
+                    "id": "WORLDLY_ENDURANCE",
+                    "name": "세속의 인내",
+                    "affixes": [
+                        {
+                            "statKey": "ARMOR_PERCENT",
+                            "minValue": 0.05,
+                            "maxValue": 0.15,
+                            "isPercent": true,
+                            "description": "총 방어도 % 증가"
+                        },
+                        {
+                            "statKey": "MAX_HP_PERCENT",
+                            "minValue": 0.05,
+                            "maxValue": 0.12,
+                            "isPercent": true,
+                            "description": "최대 생명력 % 증가"
+                        },
+                        {
+                            "statKey": "DODGE_CHANCE",
+                            "minValue": 0.03,
+                            "maxValue": 0.08,
+                            "isPercent": true,
+                            "description": "회피 확률 증가"
+                        }
+                    ]
+                },
+                {
+                    "id": "ELEMENTAL_RESISTANCE",
+                    "name": "원소 저항",
+                    "affixes": [
+                        {
+                            "statKey": "RESISTANCE_ALL",
+                            "minValue": 0.05,
+                            "maxValue": 0.15,
+                            "isPercent": true,
+                            "description": "모든 저항 증가"
+                        },
+                        {
+                            "statKey": "RESISTANCE_FIRE",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "화염 저항 증가"
+                        },
+                        {
+                            "statKey": "RESISTANCE_COLD",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "냉기 저항 증가"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "UTILITY",
+            "name": "유틸리티",
+            "description": "다용도 담금질 옵션",
+            "allowedSlots": [
+                "HELMET",
+                "CHESTPLATE",
+                "GLOVES",
+                "BOOTS"
+            ],
+            "manuals": [
+                {
+                    "id": "CROWD_CONTROL",
+                    "name": "군중 제어",
+                    "affixes": [
+                        {
+                            "statKey": "STUN_DURATION",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "기절 지속 시간 증가"
+                        },
+                        {
+                            "statKey": "FREEZE_DURATION",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "빙결 지속 시간 증가"
+                        },
+                        {
+                            "statKey": "SLOW_DURATION",
+                            "minValue": 0.15,
+                            "maxValue": 0.35,
+                            "isPercent": true,
+                            "description": "감속 지속 시간 증가"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "MOBILITY",
+            "name": "기동성",
+            "description": "이동 관련 담금질 옵션",
+            "allowedSlots": [
+                "BOOTS",
+                "AMULET"
+            ],
+            "manuals": [
+                {
+                    "id": "MOVEMENT",
+                    "name": "이동",
+                    "affixes": [
+                        {
+                            "statKey": "MOVEMENT_SPEED",
+                            "minValue": 0.05,
+                            "maxValue": 0.12,
+                            "isPercent": true,
+                            "description": "이동 속도 증가"
+                        },
+                        {
+                            "statKey": "EVADE_COOLDOWN_REDUCTION",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "회피 재사용 대기시간 감소"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "RESOURCE",
+            "name": "자원",
+            "description": "자원 관련 담금질 옵션",
+            "allowedSlots": [
+                "RING",
+                "AMULET"
+            ],
+            "manuals": [
+                {
+                    "id": "RESOURCE_GENERATION",
+                    "name": "자원 생성",
+                    "affixes": [
+                        {
+                            "statKey": "RESOURCE_GENERATION",
+                            "minValue": 0.10,
+                            "maxValue": 0.25,
+                            "isPercent": true,
+                            "description": "자원 생성량 증가"
+                        },
+                        {
+                            "statKey": "RESOURCE_COST_REDUCTION",
+                            "minValue": 0.05,
+                            "maxValue": 0.15,
+                            "isPercent": true,
+                            "description": "자원 소모량 감소"
+                        },
+                        {
+                            "statKey": "LUCKY_HIT_RESOURCE",
+                            "minValue": 5,
+                            "maxValue": 15,
+                            "description": "행운의 적중 시 자원 회복"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "defaultDurability": 5,
+    "maxSlots": 2
+}

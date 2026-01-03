@@ -121,5 +121,98 @@
         "type": "UTILITY",
         "description": "스킬 재사용 대기시간을 줄입니다.",
         "isPercent": true
+    },
+    {
+        "id": "VULNERABLE_DAMAGE",
+        "name": "취약 피해",
+        "type": "OFFENSIVE",
+        "description": "취약 상태의 적에게 주는 추가 피해입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "OVERPOWER_DAMAGE",
+        "name": "제압 피해",
+        "type": "OFFENSIVE",
+        "description": "제압 발동 시 추가 피해입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "LUCKY_HIT",
+        "name": "행운의 적중",
+        "type": "OFFENSIVE",
+        "description": "행운의 적중 효과가 발동할 확률입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "FORTIFY",
+        "name": "보강",
+        "type": "DEFENSIVE",
+        "description": "현재 보강 수치입니다. 체력보다 높으면 받는 피해가 감소합니다."
+    },
+    {
+        "id": "FORTIFY_MAX",
+        "name": "최대 보강",
+        "type": "DEFENSIVE",
+        "description": "보강의 최대값입니다."
+    },
+    {
+        "id": "BARRIER",
+        "name": "보호막",
+        "type": "DEFENSIVE",
+        "description": "현재 보호막 수치입니다. 체력보다 먼저 소모됩니다."
+    },
+    {
+        "id": "BLEED_DAMAGE",
+        "name": "출혈 피해",
+        "type": "OFFENSIVE",
+        "description": "적에게 입히는 출혈 지속 피해입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "DAMAGE_TO_CLOSE",
+        "name": "근거리 적 피해",
+        "type": "OFFENSIVE",
+        "description": "근거리 적에게 주는 피해가 증가합니다.",
+        "isPercent": true
+    },
+    {
+        "id": "DAMAGE_TO_DISTANT",
+        "name": "원거리 적 피해",
+        "type": "OFFENSIVE",
+        "description": "원거리 적에게 주는 피해가 증가합니다.",
+        "isPercent": true
+    },
+    {
+        "id": "DAMAGE_TO_CC",
+        "name": "군중 제어 대상 피해",
+        "type": "OFFENSIVE",
+        "description": "기절/빙결/느려진 적에게 주는 피해가 증가합니다.",
+        "isPercent": true
+    },
+    {
+        "id": "DAMAGE_REDUCTION",
+        "name": "피해 감소",
+        "type": "DEFENSIVE",
+        "description": "받는 피해가 감소합니다.",
+        "isPercent": true
+    },
+    {
+        "id": "LIFE_ON_HIT",
+        "name": "적중 시 생명력",
+        "type": "UTILITY",
+        "description": "공격 적중 시 회복되는 생명력입니다."
+    },
+    {
+        "id": "LIFE_ON_KILL",
+        "name": "처치 시 생명력",
+        "type": "UTILITY",
+        "description": "적 처치 시 회복되는 생명력입니다."
+    },
+    {
+        "id": "MOVEMENT_SPEED",
+        "name": "이동 속도",
+        "type": "UTILITY",
+        "description": "이동 속도가 증가합니다.",
+        "isPercent": true
     }
 ]

@@ -49,5 +49,130 @@
             "ARMOR": 150.0,
             "MAX_HP": 150.0
         }
+    },
+    {
+        "id": "iron_axe",
+        "material": "IRON_AXE",
+        "itemType": "ONE_HANDED_AXE",
+        "baseStats": {
+            "WEAPON_DAMAGE": 55.0
+        },
+        "implicitStats": {
+            "DAMAGE_TO_HEALTHY": 0.10
+        },
+        "implicitDescription": "건강한 적(체력 80% 이상)에게 주는 피해 +10%"
+    },
+    {
+        "id": "diamond_axe",
+        "material": "DIAMOND_AXE",
+        "itemType": "ONE_HANDED_AXE",
+        "baseStats": {
+            "WEAPON_DAMAGE": 110.0
+        },
+        "implicitStats": {
+            "DAMAGE_TO_HEALTHY": 0.15
+        },
+        "implicitDescription": "건강한 적에게 주는 피해 +15%"
+    },
+    {
+        "id": "netherite_axe",
+        "material": "NETHERITE_AXE",
+        "itemType": "TWO_HANDED_AXE",
+        "baseStats": {
+            "WEAPON_DAMAGE": 200.0
+        },
+        "implicitStats": {
+            "DAMAGE_TO_HEALTHY": 0.20
+        },
+        "implicitDescription": "건강한 적에게 주는 피해 +20%"
+    },
+    {
+        "id": "mace",
+        "material": "MACE",
+        "itemType": "ONE_HANDED_MACE",
+        "baseStats": {
+            "WEAPON_DAMAGE": 60.0
+        },
+        "implicitStats": {
+            "OVERPOWER_DAMAGE": 0.10
+        },
+        "implicitDescription": "제압 피해 +10%"
+    },
+    {
+        "id": "bow",
+        "material": "BOW",
+        "itemType": "BOW",
+        "baseStats": {
+            "WEAPON_DAMAGE": 80.0
+        },
+        "implicitStats": {
+            "DAMAGE_TO_DISTANT": 0.12
+        },
+        "implicitDescription": "원거리 적에게 주는 피해 +12%"
+    },
+    {
+        "id": "crossbow",
+        "material": "CROSSBOW",
+        "itemType": "CROSSBOW",
+        "baseStats": {
+            "WEAPON_DAMAGE": 120.0
+        },
+        "implicitStats": {
+            "VULNERABLE_DAMAGE": 0.15
+        },
+        "implicitDescription": "취약 피해 +15%"
+    },
+    {
+        "id": "trident",
+        "material": "TRIDENT",
+        "itemType": "STAFF",
+        "baseStats": {
+            "WEAPON_DAMAGE": 90.0
+        },
+        "implicitStats": {
+            "DAMAGE_TO_CC": 0.12
+        },
+        "implicitDescription": "군중 제어 대상에게 피해 +12%"
+    },
+    {
+        "id": "dagger",
+        "material": "IRON_SWORD",
+        "itemType": "DAGGER",
+        "customModelData": 1001,
+        "baseStats": {
+            "WEAPON_DAMAGE": 35.0,
+            "ATTACK_SPEED": 0.10
+        },
+        "implicitStats": {
+            "DAMAGE_TO_CLOSE": 0.15
+        },
+        "implicitDescription": "근거리 적에게 주는 피해 +15%"
+    },
+    {
+        "id": "iron_helmet",
+        "material": "IRON_HELMET",
+        "itemType": "HELMET",
+        "baseStats": {
+            "ARMOR": 40.0,
+            "MAX_HP": 30.0
+        }
+    },
+    {
+        "id": "iron_leggings",
+        "material": "IRON_LEGGINGS",
+        "itemType": "LEGGINGS",
+        "baseStats": {
+            "ARMOR": 60.0,
+            "MAX_HP": 50.0
+        }
+    },
+    {
+        "id": "iron_boots",
+        "material": "IRON_BOOTS",
+        "itemType": "BOOTS",
+        "baseStats": {
+            "ARMOR": 30.0,
+            "MOVEMENT_SPEED": 0.05
+        }
     }
 ]

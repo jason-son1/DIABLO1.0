@@ -139,5 +139,141 @@
         "statModifiers": {
             "OVERPOWER_DAMAGE": 0.20
         }
+    },
+    {
+        "id": "DAMAGE_CLOSE_01",
+        "name": "근접의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "OFFENSIVE",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "DAMAGE_TO_CLOSE": 0.15
+        }
+    },
+    {
+        "id": "DAMAGE_DISTANT_01",
+        "name": "사격의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "OFFENSIVE",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "DAMAGE_TO_DISTANT": 0.15
+        }
+    },
+    {
+        "id": "DAMAGE_CC_01",
+        "name": "제어의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "OFFENSIVE",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "DAMAGE_TO_CC": 0.20
+        }
+    },
+    {
+        "id": "LUCKY_HIT_01",
+        "name": "행운의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "OFFENSIVE",
+        "allowedItemTypes": [
+            "WEAPON",
+            "RING",
+            "AMULET"
+        ],
+        "statModifiers": {
+            "LUCKY_HIT": 0.10
+        }
+    },
+    {
+        "id": "FORTIFY_01",
+        "name": "보강의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "DEFENSIVE",
+        "allowedItemTypes": [
+            "HELMET",
+            "CHESTPLATE",
+            "LEGGINGS"
+        ],
+        "statModifiers": {
+            "FORTIFY_MAX": 100.0
+        }
+    },
+    {
+        "id": "BARRIER_01",
+        "name": "보호의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "DEFENSIVE",
+        "allowedItemTypes": [
+            "HELMET",
+            "CHESTPLATE",
+            "AMULET"
+        ],
+        "statModifiers": {
+            "BARRIER": 50.0
+        }
+    },
+    {
+        "id": "BLEED_01",
+        "name": "출혈의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "OFFENSIVE",
+        "allowedItemTypes": [
+            "ONE_HANDED_SWORD",
+            "TWO_HANDED_SWORD",
+            "AXE",
+            "DAGGER"
+        ],
+        "statModifiers": {
+            "BLEED_DAMAGE": 0.25
+        }
+    },
+    {
+        "id": "LIFE_ON_HIT_01",
+        "name": "흡수의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "UTILITY",
+        "allowedItemTypes": [
+            "WEAPON",
+            "RING"
+        ],
+        "statModifiers": {
+            "LIFE_ON_HIT": 25.0
+        }
+    },
+    {
+        "id": "MOVEMENT_01",
+        "name": "신풍의",
+        "tags": [
+            "TEMPERING"
+        ],
+        "category": "MOBILITY",
+        "allowedItemTypes": [
+            "BOOTS"
+        ],
+        "statModifiers": {
+            "MOVEMENT_SPEED": 0.08
+        }
     }
 ]

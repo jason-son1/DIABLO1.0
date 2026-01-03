@@ -1,0 +1,212 @@
+[
+    {
+        "id": "FROZEN",
+        "name": "빙결",
+        "type": "COLD",
+        "description": "얼음 구체를 소환하여 폭발시켜 플레이어를 얼립니다.",
+        "triggerType": "TIMER",
+        "triggerInterval": 10000,
+        "effect": {
+            "summon": "ICE_ORB",
+            "orbDelay": 3000,
+            "freezeRadius": 4,
+            "freezeDuration": 2000,
+            "slowLevel": 255
+        },
+        "visual": {
+            "particle": "SNOW_SHOVEL",
+            "sound": "BLOCK_GLASS_BREAK"
+        }
+    },
+    {
+        "id": "COLD_ENCHANTED",
+        "name": "냉기 강화",
+        "type": "COLD",
+        "description": "모든 공격에 냉기 피해와 감속을 추가합니다.",
+        "triggerType": "ON_ATTACK",
+        "effect": {
+            "bonusDamageType": "COLD",
+            "bonusDamagePercent": 0.2,
+            "slowLevel": 1,
+            "slowDuration": 2000
+        }
+    },
+    {
+        "id": "WALLER",
+        "name": "벽 생성",
+        "type": "UTILITY",
+        "description": "플레이어 주변에 벽을 생성하여 도주를 막습니다.",
+        "triggerType": "TIMER",
+        "triggerInterval": 15000,
+        "effect": {
+            "wallMaterial": "BONE_BLOCK",
+            "wallShape": "U",
+            "wallDuration": 7000,
+            "wallHeight": 3
+        },
+        "visual": {
+            "sound": "BLOCK_STONE_PLACE"
+        }
+    },
+    {
+        "id": "SUPPRESSOR",
+        "name": "제압자",
+        "type": "UTILITY",
+        "description": "결계 외부에서 오는 원거리 공격을 무효화합니다.",
+        "triggerType": "PASSIVE",
+        "effect": {
+            "barrierRadius": 5,
+            "blockProjectilesOutside": true
+        },
+        "visual": {
+            "particle": "SPELL_WITCH",
+            "particleRadius": 5
+        }
+    },
+    {
+        "id": "PLAGUEBEARER",
+        "name": "역병",
+        "type": "POISON",
+        "description": "사망 시 독 웅덩이를 남깁니다.",
+        "triggerType": "ON_DEATH",
+        "effect": {
+            "poolRadius": 3,
+            "poolDuration": 10000,
+            "poisonDamagePerSecond": 5,
+            "poisonLevel": 1
+        },
+        "visual": {
+            "particle": "SLIME",
+            "color": "GREEN"
+        }
+    },
+    {
+        "id": "POISON_ENCHANTED",
+        "name": "독 강화",
+        "type": "POISON",
+        "description": "모든 공격에 중독 효과를 추가합니다.",
+        "triggerType": "ON_ATTACK",
+        "effect": {
+            "poisonLevel": 1,
+            "poisonDuration": 5000
+        }
+    },
+    {
+        "id": "TELEPORTER",
+        "name": "순간이동",
+        "type": "UTILITY",
+        "description": "플레이어의 뒤로 순간이동하거나 도망갑니다.",
+        "triggerType": "TIMER",
+        "triggerInterval": 8000,
+        "effect": {
+            "teleportBehindTarget": true,
+            "defensiveTeleportThreshold": 0.5
+        },
+        "visual": {
+            "particle": "PORTAL",
+            "sound": "ENTITY_ENDERMAN_TELEPORT"
+        }
+    },
+    {
+        "id": "TERRIFYING",
+        "name": "공포",
+        "type": "SHADOW",
+        "description": "바닥에 공포 문양을 그려 플레이어를 공포 상태로 만듭니다.",
+        "triggerType": "TIMER",
+        "triggerInterval": 12000,
+        "effect": {
+            "chargeTime": 2000,
+            "fearRadius": 5,
+            "blindnessDuration": 3000,
+            "nauseaDuration": 2000
+        },
+        "visual": {
+            "particle": "SQUID_INK",
+            "sound": "ENTITY_VEX_AMBIENT"
+        }
+    },
+    {
+        "id": "LIGHTNING_ENCHANTED",
+        "name": "전류",
+        "type": "LIGHTNING",
+        "description": "피격 시 번개 줄기를 사방으로 방출합니다.",
+        "triggerType": "ON_DAMAGED",
+        "effect": {
+            "projectileCount": 8,
+            "projectileSpeed": 20,
+            "projectileDamage": 10
+        },
+        "visual": {
+            "particle": "ELECTRIC_SPARK",
+            "sound": "ENTITY_LIGHTNING_BOLT_IMPACT"
+        }
+    },
+    {
+        "id": "EXPLOSIVE",
+        "name": "폭발",
+        "type": "FIRE",
+        "description": "사망 또는 피격 시 화염 구체를 소환합니다.",
+        "triggerType": "ON_DEATH",
+        "effect": {
+            "summon": "FIRE_ORB",
+            "orbDelay": 5000,
+            "explosionRadius": 5,
+            "explosionDamage": 30
+        },
+        "visual": {
+            "particle": "FLAME",
+            "sound": "ENTITY_GENERIC_EXPLODE"
+        }
+    },
+    {
+        "id": "SHADOW_ENCHANTED",
+        "name": "암흑 강화",
+        "type": "SHADOW",
+        "description": "피격 시 분신을 소환합니다.",
+        "triggerType": "ON_DAMAGED",
+        "triggerChance": 0.2,
+        "effect": {
+            "cloneCount": 1,
+            "cloneHealthPercent": 0.3,
+            "cloneDuration": 10000
+        }
+    },
+    {
+        "id": "VAMPIRIC",
+        "name": "흡혈",
+        "type": "UTILITY",
+        "description": "공격 시 생명력을 회복합니다.",
+        "triggerType": "ON_ATTACK",
+        "effect": {
+            "lifeStealPercent": 0.25
+        }
+    },
+    {
+        "id": "MULTISHOT",
+        "name": "다발 사격",
+        "type": "UTILITY",
+        "description": "원거리 공격 시 3발의 투사체를 발사합니다.",
+        "triggerType": "PASSIVE",
+        "effect": {
+            "projectileCount": 3,
+            "spreadAngle": 15
+        }
+    },
+    {
+        "id": "TEMPEST",
+        "name": "폭풍",
+        "type": "COLD",
+        "description": "플레이어를 끌어당기는 바람을 생성합니다.",
+        "triggerType": "TIMER",
+        "triggerInterval": 10000,
+        "effect": {
+            "pullRadius": 8,
+            "pullStrength": 0.5,
+            "duration": 3000
+        },
+        "visual": {
+            "particle": "SWEEP_ATTACK",
+            "sound": "ITEM_ELYTRA_FLYING"
+        }
+    }
+]
