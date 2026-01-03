@@ -1,0 +1,125 @@
+[
+    {
+        "id": "STRENGTH",
+        "name": "힘",
+        "type": "CORE",
+        "description": "물리 공격력과 방어구 보너스를 증가시킵니다.",
+        "icon": "IRON_SWORD",
+        "scaling": {
+            "weapon_damage": 0.001,
+            "armor": 0.001
+        }
+    },
+    {
+        "id": "INTELLIGENCE",
+        "name": "지능",
+        "type": "CORE",
+        "description": "마법 공격력과 저항력을 증가시킵니다.",
+        "icon": "ENCHANTED_BOOK",
+        "scaling": {
+            "skill_damage": 0.001,
+            "all_resistance": 0.0005
+        }
+    },
+    {
+        "id": "WILLPOWER",
+        "name": "의지력",
+        "type": "CORE",
+        "description": "자원 재생과 치유 효과를 증가시킵니다.",
+        "icon": "GOLDEN_APPLE",
+        "scaling": {
+            "resource_regen": 0.001,
+            "healing_received": 0.001
+        }
+    },
+    {
+        "id": "DEXTERITY",
+        "name": "민첩",
+        "type": "CORE",
+        "description": "치명타 확률과 회피율을 증가시킵니다.",
+        "icon": "FEATHER",
+        "scaling": {
+            "crit_chance": 0.0002,
+            "dodge_chance": 0.0002
+        }
+    },
+    {
+        "id": "WEAPON_DAMAGE",
+        "name": "무기 데미지",
+        "type": "OFFENSIVE",
+        "description": "공격 시 기본 피해량입니다."
+    },
+    {
+        "id": "CRIT_CHANCE",
+        "name": "치명타 확률",
+        "type": "OFFENSIVE",
+        "description": "공격 시 치명타가 발생할 확률입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "CRIT_DAMAGE",
+        "name": "치명타 피해",
+        "type": "OFFENSIVE",
+        "description": "치명타 발생 시 추가 피해량입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "ATTACK_SPEED",
+        "name": "공격 속도",
+        "type": "OFFENSIVE",
+        "description": "공격 간 딜레이를 줄입니다.",
+        "isPercent": true
+    },
+    {
+        "id": "ARMOR",
+        "name": "방어력",
+        "type": "DEFENSIVE",
+        "description": "물리 피해를 감소시킵니다."
+    },
+    {
+        "id": "MAX_HP",
+        "name": "최대 체력",
+        "type": "DEFENSIVE",
+        "description": "최대 생명력입니다."
+    },
+    {
+        "id": "RESISTANCE_FIRE",
+        "name": "화염 저항",
+        "type": "DEFENSIVE",
+        "description": "화염 피해를 감소시킵니다.",
+        "isPercent": true
+    },
+    {
+        "id": "RESISTANCE_COLD",
+        "name": "냉기 저항",
+        "type": "DEFENSIVE",
+        "description": "냉기 피해를 감소시킵니다.",
+        "isPercent": true
+    },
+    {
+        "id": "RESISTANCE_LIGHTNING",
+        "name": "번개 저항",
+        "type": "DEFENSIVE",
+        "description": "번개 피해를 감소시킵니다.",
+        "isPercent": true
+    },
+    {
+        "id": "RESOURCE_MAX",
+        "name": "최대 자원",
+        "type": "UTILITY",
+        "description": "직업별 자원(마나/분노 등)의 최대값입니다."
+    },
+    {
+        "id": "RESOURCE_REGEN",
+        "name": "자원 재생",
+        "type": "UTILITY",
+        "description": "초당 자원 재생량입니다."
+    },
+    {
+        "id": "COOLDOWN_REDUCTION",
+        "name": "재사용 대기시간 감소",
+        "type": "UTILITY",
+        "description": "스킬 재사용 대기시간을 줄입니다.",
+        "isPercent": true
+    }
+]

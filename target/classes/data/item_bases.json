@@ -1,0 +1,53 @@
+[
+    {
+        "id": "iron_sword",
+        "material": "IRON_SWORD",
+        "itemType": "ONE_HANDED_SWORD",
+        "baseStats": {
+            "WEAPON_DAMAGE": 50.0
+        }
+    },
+    {
+        "id": "diamond_sword",
+        "material": "DIAMOND_SWORD",
+        "itemType": "ONE_HANDED_SWORD",
+        "baseStats": {
+            "WEAPON_DAMAGE": 100.0
+        }
+    },
+    {
+        "id": "netherite_sword",
+        "material": "NETHERITE_SWORD",
+        "itemType": "ONE_HANDED_SWORD",
+        "baseStats": {
+            "WEAPON_DAMAGE": 150.0
+        }
+    },
+    {
+        "id": "leather_helmet",
+        "material": "LEATHER_HELMET",
+        "itemType": "HELMET",
+        "baseStats": {
+            "ARMOR": 20.0,
+            "MAX_HP": 50.0
+        }
+    },
+    {
+        "id": "iron_chestplate",
+        "material": "IRON_CHESTPLATE",
+        "itemType": "CHESTPLATE",
+        "baseStats": {
+            "ARMOR": 80.0,
+            "MAX_HP": 100.0
+        }
+    },
+    {
+        "id": "diamond_chestplate",
+        "material": "DIAMOND_CHESTPLATE",
+        "itemType": "CHESTPLATE",
+        "baseStats": {
+            "ARMOR": 150.0,
+            "MAX_HP": 150.0
+        }
+    }
+]

@@ -10,4 +10,25 @@ commands:
   sanctuary:
     description: "Sanctuary 시스템 메인 명령어"
     aliases: [dia, diablo]
-    usage: "/sanctuary <reload|debug>"
+    usage: "/sanctuary <reload|status>"
+    permission: sanctuary.admin
+  combattest:
+    description: "전투 시스템 테스트 명령어"
+    aliases: [ct]
+    usage: "/combattest <stats|setstats|vulnerable|fortify|bleeding|cleardebuffs>"
+    permission: sanctuary.admin
+  itemtest:
+    description: "아이템 시스템 테스트 명령어"
+    aliases: [it]
+    usage: "/itemtest <give|inspect|tempering|masterwork|demo>"
+    permission: sanctuary.admin
+  bridgetest:
+    description: "네트워크 브릿지 테스트 명령어"
+    aliases: [bt]
+    usage: "/bridgetest <status|sync|bossbar|damage|hud>"
+    permission: sanctuary.admin
+
+permissions:
+  sanctuary.admin:
+    description: "Sanctuary 관리자 명령어 권한"
+    default: op

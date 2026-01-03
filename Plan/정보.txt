@@ -1,6 +1,14 @@
 플러그인 이름은 DIABLO
 
 
-E:\Minecraft\minecraft plugin\DIABLO1.0\Plan에 있는 보고서 데이터를 읽고
+E:\Minecraft\minecraft plugin\DIABLO1.0\Plan에 있는 보고서 데이터를 읽고 내용을 기반으로 만들어줘
+
 구현계획서와 설계보고서에 있는 내용을 기반으로 만들어줘
 토대를 세우는 작업을 해줘
+
+E:\Minecraft\minecraft plugin\DIABLO1.0\Plan에 있는 보고서 데이터를 읽고
+구현계획서와 설계보고서 중심으로
+모든 기능을 구현하기 위한 작업을 진행할거야
+
+모든 기능을 한번에 구현하는 것이 아닌 자체적으로 현재 단계에서 더 필요한 또는 바꾸거나 재구성이 필요한 부분을
+분석해서 진행해줘

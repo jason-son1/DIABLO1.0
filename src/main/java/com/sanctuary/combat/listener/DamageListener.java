@@ -1,15 +1,24 @@
 package com.sanctuary.combat.listener;
 
 import com.sanctuary.combat.calc.DamageCalculator;
+import com.sanctuary.combat.calc.DefenseCalculator;
 import com.sanctuary.combat.model.DamageContext;
 import com.sanctuary.combat.stat.AttributeContainer;
+import com.sanctuary.combat.stat.Stat;
 import com.sanctuary.combat.stat.StatManager;
-import org.bukkit.ChatColor;
+import com.sanctuary.combat.status.StatusEffectManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * DamageListener
@@ -18,11 +27,16 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class DamageListener implements Listener {
 
     private final StatManager statManager;
-    private final DamageCalculator calculator;
+    private final DamageCalculator damageCalculator;
+    private final DefenseCalculator defenseCalculator;
+    private final StatusEffectManager statusEffectManager;
 
-    public DamageListener(StatManager statManager, DamageCalculator calculator) {
+    public DamageListener(StatManager statManager, DamageCalculator damageCalculator,
+            DefenseCalculator defenseCalculator, StatusEffectManager statusEffectManager) {
         this.statManager = statManager;
-        this.calculator = calculator;
+        this.damageCalculator = damageCalculator;
+        this.defenseCalculator = defenseCalculator;
+        this.statusEffectManager = statusEffectManager;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -32,52 +46,121 @@ public class DamageListener implements Listener {
             return;
         }
 
-        // 1. 바닐라 데미지 무효화 (Set to 0)
-        // 이벤트를 캔슬하면 타격 애니메이션(knockback 등)이 사라질 수 있으므로, 데미지만 0으로 설정.
+        // 1. 바닐라 데미지 무효화
         event.setDamage(0);
 
         // 2. 스탯 데이터 가져오기
         AttributeContainer attackerStats = statManager.getStats(attacker);
         AttributeContainer victimStats = statManager.getStats(victim);
 
-        // 3. 컨텍스트 생성 (Context Creation)
+        // 3. 컨텍스트 생성
         DamageContext ctx = new DamageContext(attacker, victim, attackerStats, victimStats);
+        ctx.addTag("PHYSICAL"); // 기본 물리 공격
 
-        // TODO: 무기 태그, 스킬 태그 등을 여기서 주입해야 함.
-        ctx.addTag("PHYSICAL"); // 기본 물리 공격 가정
+        // 상태 이상 체크: 취약 적용
+        if (statusEffectManager.isVulnerable(victim)) {
+            ctx.setVulnerable(true);
+        }
 
-        // 4. 데미지 계산 (Calculation)
-        double finalDamage = calculator.calculate(ctx);
+        // 4. 공격 데미지 계산 (Attack Phase)
+        double rawDamage = damageCalculator.calculate(ctx);
 
-        // 5. 최종 데미지 적용
-        // 바닐라 체력을 직접 깎거나, setDamage를 다시 설정할 수도 있지만,
-        // 방어력(Armor) 계산도 우리가 직접 해야 하므로 health를 직접 조작하는 것이 나을 수 있음.
-        // 하지만 호환성을 위해 event.setDamage()에 최종값을 넣는 방식도 고려 가능.
-        // 여기서는 "완전 제어"를 위해 health 직접 차감 방식을 선택하거나,
-        // 방어 공식이 DamageCalculator에 포함되지 않았다면 event.setDamage를 사용해선 안됨.
-        // 현재 DamageCalculator는 방어(Armor) 로직 전 단계임.
+        // 5. 방어 계산 (Defense Phase)
+        double mitigatedDamage = defenseCalculator.applyDefense(ctx, rawDamage);
 
-        // TODO: 방어력(Damage Reduction from Armor/Resist) 적용 로직 추가 필요.
-        // 일단 테스트를 위해 계산된 데미지를 그대로 적용.
+        // 5.1 보강(Fortify) 적용
+        double fortifyAmount = statusEffectManager.getFortifyAmount(victim);
+        if (fortifyAmount > 0) {
+            mitigatedDamage = defenseCalculator.applyFortify(mitigatedDamage, victim.getHealth(), fortifyAmount);
+        }
 
+        // 5.2 보호막(Barrier) 적용
+        com.sanctuary.core.ecs.SanctuaryEntity victimEntity = statManager.getCore().getEntityManager()
+                .get(victim.getUniqueId());
+        if (victimEntity != null) {
+            com.sanctuary.core.ecs.component.StateComponent stateComp = victimEntity
+                    .getComponent(com.sanctuary.core.ecs.component.StateComponent.class);
+            if (stateComp != null && stateComp.hasBarrier()) {
+                mitigatedDamage = stateComp.damageBarrier(mitigatedDamage);
+            }
+        }
+
+        // 6. 최종 데미지 적용
         double currentHealth = victim.getHealth();
-        double newHealth = Math.max(0, currentHealth - finalDamage);
+        double newHealth = Math.max(0, currentHealth - mitigatedDamage);
         victim.setHealth(newHealth);
 
-        // 6. 결과 출력 (Debug / Indicator)
-        sendDebugMessage(attacker, finalDamage, ctx);
+        // 7. 결과 출력 (데미지 인디케이터)
+        showDamageIndicator(victim, mitigatedDamage, ctx);
+
+        // 디버그 메시지 (플레이어에게만)
+        if (attacker instanceof Player player) {
+            sendDebugMessage(player, rawDamage, mitigatedDamage, ctx);
+        }
     }
 
-    private void sendDebugMessage(LivingEntity attacker, double damage, DamageContext ctx) {
+    /**
+     * 데미지 인디케이터를 표시합니다.
+     * 홀로그램 텍스트로 피해량을 띄웁니다.
+     */
+    private void showDamageIndicator(LivingEntity victim, double damage, DamageContext ctx) {
+        // Paper/Adventure API 사용
+        Location loc = victim.getLocation().add(
+                (Math.random() - 0.5) * 0.5,
+                victim.getHeight() + 0.5 + Math.random() * 0.3,
+                (Math.random() - 0.5) * 0.5);
+
+        // 색상 결정
+        NamedTextColor color = NamedTextColor.WHITE;
+        String suffix = "";
+
+        if (ctx.isCritical() && ctx.isOverpower()) {
+            color = NamedTextColor.GOLD; // 치명타 + 제압
+            suffix = "!";
+        } else if (ctx.isCritical()) {
+            color = NamedTextColor.YELLOW; // 치명타
+            suffix = "!";
+        } else if (ctx.isOverpower()) {
+            color = NamedTextColor.AQUA; // 제압
+            suffix = "☆";
+        } else if (ctx.isVulnerable()) {
+            color = NamedTextColor.LIGHT_PURPLE; // 취약
+        }
+
+        String damageText = String.format("%.0f%s", damage, suffix);
+        Component displayName = Component.text(damageText, color);
+
+        // ArmorStand로 홀로그램 생성
+        ArmorStand hologram = (ArmorStand) victim.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+        hologram.setVisible(false);
+        hologram.setGravity(false);
+        hologram.setMarker(true);
+        hologram.setCustomNameVisible(true);
+        hologram.customName(displayName);
+
+        // 0.8초 후 제거
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (hologram.isValid()) {
+                    hologram.remove();
+                }
+            }
+        }.runTaskLater(statManager.getCore().getPlugin(), 16L);
+    }
+
+    private void sendDebugMessage(Player player, double rawDamage, double finalDamage, DamageContext ctx) {
         StringBuilder msg = new StringBuilder();
-        msg.append(ChatColor.GRAY).append("Hit! Damage: ").append(ChatColor.WHITE)
-                .append(String.format("%.1f", damage));
+        msg.append("§7[데미지] Raw: §f").append(String.format("%.1f", rawDamage));
+        msg.append(" §7→ Final: §f").append(String.format("%.1f", finalDamage));
 
         if (ctx.isCritical())
-            msg.append(ChatColor.YELLOW).append(" (Critical!)");
+            msg.append(" §e(치명타!)");
         if (ctx.isOverpower())
-            msg.append(ChatColor.AQUA).append(" (Overpower!)");
+            msg.append(" §b(제압!)");
+        if (ctx.isVulnerable())
+            msg.append(" §d(취약)");
 
-        attacker.sendMessage(msg.toString());
+        player.sendMessage(msg.toString());
     }
 }

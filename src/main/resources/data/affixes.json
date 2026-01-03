@@ -1,0 +1,143 @@
+[
+    {
+        "id": "CRIT_CHANCE_01",
+        "name": "치명의",
+        "allowedItemTypes": [
+            "ONE_HANDED_SWORD",
+            "TWO_HANDED_SWORD",
+            "BOW",
+            "STAFF"
+        ],
+        "statModifiers": {
+            "CRIT_CHANCE": 0.05
+        }
+    },
+    {
+        "id": "CRIT_DAMAGE_01",
+        "name": "파멸의",
+        "allowedItemTypes": [
+            "ONE_HANDED_SWORD",
+            "TWO_HANDED_SWORD",
+            "BOW",
+            "STAFF"
+        ],
+        "statModifiers": {
+            "CRIT_DAMAGE": 0.10
+        }
+    },
+    {
+        "id": "STRENGTH_01",
+        "name": "힘의",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "STRENGTH": 50.0
+        }
+    },
+    {
+        "id": "DEXTERITY_01",
+        "name": "민첩의",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "DEXTERITY": 50.0
+        }
+    },
+    {
+        "id": "INTELLIGENCE_01",
+        "name": "지혜의",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "INTELLIGENCE": 50.0
+        }
+    },
+    {
+        "id": "WILLPOWER_01",
+        "name": "의지의",
+        "allowedItemTypes": [
+            "ALL"
+        ],
+        "statModifiers": {
+            "WILLPOWER": 50.0
+        }
+    },
+    {
+        "id": "ATTACK_SPEED_01",
+        "name": "신속의",
+        "allowedItemTypes": [
+            "ONE_HANDED_SWORD",
+            "TWO_HANDED_SWORD",
+            "BOW"
+        ],
+        "statModifiers": {
+            "ATTACK_SPEED": 0.08
+        }
+    },
+    {
+        "id": "MAX_HP_01",
+        "name": "생명의",
+        "allowedItemTypes": [
+            "HELMET",
+            "CHESTPLATE",
+            "LEGGINGS",
+            "BOOTS"
+        ],
+        "statModifiers": {
+            "MAX_HP": 100.0
+        }
+    },
+    {
+        "id": "ARMOR_01",
+        "name": "방어의",
+        "allowedItemTypes": [
+            "HELMET",
+            "CHESTPLATE",
+            "LEGGINGS",
+            "BOOTS"
+        ],
+        "statModifiers": {
+            "ARMOR": 50.0
+        }
+    },
+    {
+        "id": "FIRE_RESIST_01",
+        "name": "화염 저항의",
+        "allowedItemTypes": [
+            "HELMET",
+            "CHESTPLATE",
+            "LEGGINGS",
+            "BOOTS"
+        ],
+        "statModifiers": {
+            "RESISTANCE_FIRE": 0.15
+        }
+    },
+    {
+        "id": "VULN_DAMAGE_01",
+        "name": "약점 공략의",
+        "allowedItemTypes": [
+            "ONE_HANDED_SWORD",
+            "TWO_HANDED_SWORD",
+            "BOW",
+            "STAFF"
+        ],
+        "statModifiers": {
+            "VULNERABLE_DAMAGE": 0.12
+        }
+    },
+    {
+        "id": "OVERPOWER_01",
+        "name": "제압의",
+        "allowedItemTypes": [
+            "ONE_HANDED_SWORD",
+            "TWO_HANDED_SWORD"
+        ],
+        "statModifiers": {
+            "OVERPOWER_DAMAGE": 0.20
+        }
+    }
+]

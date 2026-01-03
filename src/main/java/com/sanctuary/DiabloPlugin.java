@@ -2,8 +2,10 @@ package com.sanctuary;
 
 import com.sanctuary.bridge.SanctuaryBridge;
 import com.sanctuary.combat.SanctuaryCombat;
+import com.sanctuary.combat.command.CombatTestCommand;
 import com.sanctuary.core.SanctuaryCore;
 import com.sanctuary.items.SanctuaryItems;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -44,6 +46,7 @@ public class DiabloPlugin extends JavaPlugin {
             // 3. Combat 모듈 초기화 (데미지 파이프라인)
             this.combatModule = new SanctuaryCombat(this, coreModule, itemsModule);
             this.combatModule.initialize();
+            registerCombatCommands();
             logger.info("[Sanctuary] Combat 모듈 활성화 완료.");
 
             // 4. Bridge 모듈 초기화 (네트워킹)
@@ -60,14 +63,27 @@ public class DiabloPlugin extends JavaPlugin {
         }
     }
 
+    private void registerCombatCommands() {
+        PluginCommand combatTestCmd = getCommand("combattest");
+        if (combatTestCmd != null) {
+            CombatTestCommand handler = new CombatTestCommand(this, combatModule);
+            combatTestCmd.setExecutor(handler);
+            combatTestCmd.setTabCompleter(handler);
+        }
+    }
+
     @Override
     public void onDisable() {
         logger.info("[Sanctuary] 시스템 종료 중...");
-        
-        if (bridgeModule != null) bridgeModule.shutdown();
-        if (combatModule != null) combatModule.shutdown();
-        if (itemsModule != null) itemsModule.shutdown();
-        if (coreModule != null) coreModule.shutdown();
+
+        if (bridgeModule != null)
+            bridgeModule.shutdown();
+        if (combatModule != null)
+            combatModule.shutdown();
+        if (itemsModule != null)
+            itemsModule.shutdown();
+        if (coreModule != null)
+            coreModule.shutdown();
 
         logger.info("[Sanctuary] 성역의 문이 닫혔습니다.");
     }
@@ -76,8 +92,19 @@ public class DiabloPlugin extends JavaPlugin {
         return instance;
     }
 
-    public SanctuaryCore getCoreModule() { return coreModule; }
-    public SanctuaryCombat getCombatModule() { return combatModule; }
-    public SanctuaryItems getItemsModule() { return itemsModule; }
-    public SanctuaryBridge getBridgeModule() { return bridgeModule; }
+    public SanctuaryCore getCoreModule() {
+        return coreModule;
+    }
+
+    public SanctuaryCombat getCombatModule() {
+        return combatModule;
+    }
+
+    public SanctuaryItems getItemsModule() {
+        return itemsModule;
+    }
+
+    public SanctuaryBridge getBridgeModule() {
+        return bridgeModule;
+    }
 }
