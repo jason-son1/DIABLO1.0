@@ -1,0 +1,276 @@
+{
+    "boards": [
+        {
+            "id": "starter_board",
+            "name": "시작 보드",
+            "description": "모든 직업의 시작 정복자 보드",
+            "width": 7,
+            "height": 7,
+            "startNode": "start",
+            "nodes": [
+                {
+                    "id": "start",
+                    "type": "NORMAL",
+                    "stat": "NONE",
+                    "value": 0,
+                    "x": 3,
+                    "y": 3
+                },
+                {
+                    "id": "str_1",
+                    "type": "NORMAL",
+                    "stat": "STRENGTH",
+                    "value": 5,
+                    "x": 2,
+                    "y": 3
+                },
+                {
+                    "id": "str_2",
+                    "type": "NORMAL",
+                    "stat": "STRENGTH",
+                    "value": 5,
+                    "x": 4,
+                    "y": 3
+                },
+                {
+                    "id": "dex_1",
+                    "type": "NORMAL",
+                    "stat": "DEXTERITY",
+                    "value": 5,
+                    "x": 3,
+                    "y": 2
+                },
+                {
+                    "id": "dex_2",
+                    "type": "NORMAL",
+                    "stat": "DEXTERITY",
+                    "value": 5,
+                    "x": 3,
+                    "y": 4
+                },
+                {
+                    "id": "int_1",
+                    "type": "NORMAL",
+                    "stat": "INTELLIGENCE",
+                    "value": 5,
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "id": "wil_1",
+                    "type": "NORMAL",
+                    "stat": "WILLPOWER",
+                    "value": 5,
+                    "x": 4,
+                    "y": 2
+                },
+                {
+                    "id": "magic_crit",
+                    "type": "MAGIC",
+                    "stat": "CRIT_CHANCE",
+                    "value": 0.02,
+                    "x": 1,
+                    "y": 3
+                },
+                {
+                    "id": "magic_res",
+                    "type": "MAGIC",
+                    "stat": "ALL_RESISTANCE",
+                    "value": 0.05,
+                    "x": 5,
+                    "y": 3
+                },
+                {
+                    "id": "rare_dmg",
+                    "type": "RARE",
+                    "stat": "DAMAGE_BONUS",
+                    "value": 0.10,
+                    "effect": "damage_boost",
+                    "x": 3,
+                    "y": 1
+                },
+                {
+                    "id": "glyph_1",
+                    "type": "GLYPH_SOCKET",
+                    "stat": "GLYPH",
+                    "value": 0,
+                    "x": 3,
+                    "y": 5
+                }
+            ],
+            "connections": [
+                [
+                    "start",
+                    "str_1"
+                ],
+                [
+                    "start",
+                    "str_2"
+                ],
+                [
+                    "start",
+                    "dex_1"
+                ],
+                [
+                    "start",
+                    "dex_2"
+                ],
+                [
+                    "str_1",
+                    "int_1"
+                ],
+                [
+                    "str_2",
+                    "wil_1"
+                ],
+                [
+                    "str_1",
+                    "magic_crit"
+                ],
+                [
+                    "str_2",
+                    "magic_res"
+                ],
+                [
+                    "dex_1",
+                    "rare_dmg"
+                ],
+                [
+                    "dex_2",
+                    "glyph_1"
+                ]
+            ]
+        },
+        {
+            "id": "barbarian_wrath",
+            "name": "분노의 보드",
+            "description": "야만용사 전용 - 분노와 광폭 강화",
+            "classRestriction": "BARBARIAN",
+            "width": 9,
+            "height": 9,
+            "startNode": "wrath_start",
+            "nodes": [
+                {
+                    "id": "wrath_start",
+                    "type": "NORMAL",
+                    "stat": "STRENGTH",
+                    "value": 5,
+                    "x": 4,
+                    "y": 4
+                },
+                {
+                    "id": "fury_gen",
+                    "type": "MAGIC",
+                    "stat": "FURY_GENERATION",
+                    "value": 0.15,
+                    "x": 3,
+                    "y": 4
+                },
+                {
+                    "id": "berserk_dur",
+                    "type": "MAGIC",
+                    "stat": "BERSERK_DURATION",
+                    "value": 0.20,
+                    "x": 5,
+                    "y": 4
+                },
+                {
+                    "id": "rare_berserk",
+                    "type": "RARE",
+                    "stat": "BERSERK_DAMAGE",
+                    "value": 0.25,
+                    "effect": "berserking_strike",
+                    "x": 4,
+                    "y": 2
+                },
+                {
+                    "id": "glyph_wrath",
+                    "type": "GLYPH_SOCKET",
+                    "stat": "GLYPH",
+                    "value": 0,
+                    "x": 4,
+                    "y": 6
+                },
+                {
+                    "id": "legend_warcry",
+                    "type": "LEGENDARY",
+                    "stat": "NONE",
+                    "value": 0,
+                    "effect": "wrath_of_berserker",
+                    "x": 4,
+                    "y": 0
+                }
+            ],
+            "connections": [
+                [
+                    "wrath_start",
+                    "fury_gen"
+                ],
+                [
+                    "wrath_start",
+                    "berserk_dur"
+                ],
+                [
+                    "fury_gen",
+                    "rare_berserk"
+                ],
+                [
+                    "berserk_dur",
+                    "rare_berserk"
+                ],
+                [
+                    "wrath_start",
+                    "glyph_wrath"
+                ],
+                [
+                    "rare_berserk",
+                    "legend_warcry"
+                ]
+            ]
+        }
+    ],
+    "glyphs": [
+        {
+            "id": "glyph_exploit",
+            "name": "착취",
+            "description": "취약 적에게 피해 증가",
+            "radius": 3,
+            "bonusPerNode": {
+                "stat": "VULN_DAMAGE",
+                "value": 0.02
+            },
+            "bonusThreshold": 25,
+            "thresholdBonus": {
+                "description": "취약 지속시간 20% 증가"
+            }
+        },
+        {
+            "id": "glyph_territorial",
+            "name": "영역",
+            "description": "근접 적에게 피해 증가",
+            "radius": 4,
+            "bonusPerNode": {
+                "stat": "CLOSE_DAMAGE",
+                "value": 0.015
+            },
+            "bonusThreshold": 40,
+            "thresholdBonus": {
+                "description": "근접 피해 감소 10%"
+            }
+        },
+        {
+            "id": "glyph_control",
+            "name": "제어",
+            "description": "군중제어된 적에게 피해 증가",
+            "radius": 3,
+            "bonusPerNode": {
+                "stat": "CC_DAMAGE",
+                "value": 0.025
+            },
+            "bonusThreshold": 25,
+            "thresholdBonus": {
+                "description": "군중제어 지속시간 15% 증가"
+            }
+        }
+    ]
+}

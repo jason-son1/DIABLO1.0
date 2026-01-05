@@ -67,10 +67,73 @@ public class CombatTestCommand implements CommandExecutor, TabCompleter {
             case "bleeding" -> handleBleeding(player, args);
             case "cleardebuffs" -> handleClearDebuffs(player);
             case "clearall" -> handleClearAll(player);
+            case "event" -> handleEvent(player);
+            case "damage" -> handleDamage(player, args);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleEvent(Player player) {
+        // 이벤트 버스 통계
+        var eventBus = combat.getEventBus();
+        if (eventBus == null) {
+            player.sendMessage(PREFIX.append(Component.text("이벤트 버스가 초기화되지 않았습니다.", NamedTextColor.RED)));
+            return;
+        }
+
+        player.sendMessage(PREFIX.append(Component.text("=== 이벤트 버스 상태 ===", NamedTextColor.AQUA)));
+
+        var counts = eventBus.getEventCounts();
+        if (counts.isEmpty()) {
+            player.sendMessage(Component.text("  발생한 이벤트가 없습니다.", NamedTextColor.GRAY));
+        } else {
+            for (var entry : counts.entrySet()) {
+                player.sendMessage(Component.text("  " + entry.getKey().name() + ": ", NamedTextColor.GRAY)
+                        .append(Component.text(entry.getValue() + "회", NamedTextColor.WHITE)));
+            }
+        }
+
+        // 리스너 수
+        player.sendMessage(Component.text("  DAMAGE_DEALT 리스너: ", NamedTextColor.GRAY)
+                .append(Component.text(
+                        eventBus.getListenerCount(com.sanctuary.combat.event.CombatEventType.DAMAGE_DEALT) + "개",
+                        NamedTextColor.WHITE)));
+    }
+
+    private void handleDamage(Player player, String[] args) {
+        // 데미지 계산 테스트 (자기 자신에게)
+        double skillCoeff = args.length > 1 ? Double.parseDouble(args[1]) : 1.0;
+
+        AttributeContainer stats = combat.getStatManager().getStats(player);
+
+        player.sendMessage(
+                PREFIX.append(Component.text("=== 데미지 계산 테스트 (스킬 계수: " + skillCoeff + ") ===", NamedTextColor.AQUA)));
+
+        // 수동 계산 시뮬레이션
+        double weaponDamage = stats.getValue(Stat.WEAPON_DAMAGE);
+        double baseDamage = weaponDamage * skillCoeff;
+        double critChance = stats.getValue(Stat.CRIT_CHANCE);
+        double critDamage = stats.getValue(Stat.CRIT_DAMAGE);
+
+        player.sendMessage(Component.text("  무기 데미지: ", NamedTextColor.GRAY)
+                .append(Component.text(String.format("%.1f", weaponDamage), NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("  기본 피해: ", NamedTextColor.GRAY)
+                .append(Component.text(String.format("%.1f", baseDamage), NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("  치명타 확률: ", NamedTextColor.GRAY)
+                .append(Component.text(String.format("%.1f%%", critChance * 100), NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("  치명타 피해: ", NamedTextColor.GRAY)
+                .append(Component.text(String.format("+%.0f%%", critDamage * 100), NamedTextColor.WHITE)));
+
+        double estimatedCrit = baseDamage * (1.5 + critDamage);
+        player.sendMessage(Component.text("  예상 치명타 피해: ", NamedTextColor.YELLOW)
+                .append(Component.text(String.format("%.1f", estimatedCrit), NamedTextColor.WHITE)));
+
+        // Lua 활성화 상태
+        player.sendMessage(Component.text("  Lua 계산: ", NamedTextColor.GRAY)
+                .append(Component.text(combat.getDamageCalculator().isLuaEnabled() ? "활성화" : "비활성화",
+                        combat.getDamageCalculator().isLuaEnabled() ? NamedTextColor.GREEN : NamedTextColor.RED)));
     }
 
     private void handleStats(Player player) {
@@ -181,6 +244,10 @@ public class CombatTestCommand implements CommandExecutor, TabCompleter {
                 .append(Component.text(" - 보강 적용", NamedTextColor.WHITE)));
         player.sendMessage(Component.text("/combattest bleeding [DPS]", NamedTextColor.GRAY)
                 .append(Component.text(" - 출혈 적용", NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("/combattest event", NamedTextColor.YELLOW)
+                .append(Component.text(" - 이벤트 버스 상태", NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("/combattest damage [계수]", NamedTextColor.YELLOW)
+                .append(Component.text(" - 데미지 계산 테스트", NamedTextColor.WHITE)));
         player.sendMessage(Component.text("/combattest cleardebuffs", NamedTextColor.GRAY)
                 .append(Component.text(" - 디버프 제거", NamedTextColor.WHITE)));
     }
@@ -189,7 +256,8 @@ public class CombatTestCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             return filterCompletions(args[0],
-                    "stats", "setstats", "vulnerable", "fortify", "bleeding", "cleardebuffs", "clearall");
+                    "stats", "setstats", "vulnerable", "fortify", "bleeding", "cleardebuffs", "clearall", "event",
+                    "damage");
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("setstats")) {
             return filterCompletions(args[1],

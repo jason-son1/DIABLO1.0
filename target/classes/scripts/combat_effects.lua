@@ -1,279 +1,157 @@
+--------------------------------------------------------------------------------
 -- combat_effects.lua
--- 전투 상태 효과 시스템: 취약, 보강, 보호막, 행운의 적중
+-- 전투 효과 및 이벤트 훅 예제 스크립트
+-- 
+-- 사용 가능한 sanctuary API:
+-- 로깅: log(msg), warn(msg)
+-- 스탯/태그: getStat(entity, key), hasTag(entity, tag), addTag(entity, tag), removeTag(entity, tag)
+-- 체력: getHealth(entity), setHealth(entity, hp), getMaxHealth(entity), heal(entity, amount), damage(entity, amount)
+-- 보강: getFortify(entity), setFortify(entity, amount), addFortify(entity, amount), isFortified(entity)
+-- 보호막: getBarrier(entity), setBarrier(entity, amount), addBarrier(entity, amount), hasBarrier(entity)
+-- 이펙트: playSound(entity, soundName), spawnParticle(entity, particleName, count)
+--------------------------------------------------------------------------------
 
--- ===================================
--- 취약 (Vulnerable) 시스템
--- ===================================
-local VULNERABLE_DURATION = 4000 -- 4초
-local VULNERABLE_DAMAGE_BONUS = 0.20 -- 20% 추가 피해
+-- 전역 설정
+local FORTIFY_PER_HIT = 5.0        -- 적 처치 시 보강 획득량
+local BARRIER_DURATION_BONUS = 1.5 -- 보호막 보너스 배율
 
--- 대상에게 취약 상태 적용
-function applyVulnerable(target, duration)
-    local actualDuration = duration or VULNERABLE_DURATION
+--------------------------------------------------------------------------------
+-- 전투 이벤트 훅 함수들
+-- CombatEventBus.registerLuaHook() 으로 등록됨
+--------------------------------------------------------------------------------
+
+-- 치명타 발생 시 호출
+function onCriticalHit(event)
+    local ctx = event.context
+    if not ctx then return end
     
+    local attacker = { uuid = ctx.attackerId }
+    local target = { uuid = ctx.victimId }
+    
+    -- 치명타 시 파티클 효과
+    sanctuary.spawnParticle(target, "CRIT", 15)
+    sanctuary.playSound(attacker, "ENTITY_PLAYER_ATTACK_CRIT")
+    
+    sanctuary.log("치명타 발생! 피해: " .. event.finalDamage)
+end
+
+-- 제압(Overpower) 발생 시 호출
+function onOverpower(event)
+    local ctx = event.context
+    if not ctx then return end
+    
+    local target = { uuid = ctx.victimId }
+    
+    -- 제압 시 큰 파티클 효과
+    sanctuary.spawnParticle(target, "EXPLOSION_LARGE", 1)
+    sanctuary.playSound(target, "ENTITY_GENERIC_EXPLODE")
+    
+    sanctuary.log("제압 발동! 추가 피해: " .. event.overpowerDamage)
+end
+
+-- 적 처치 시 호출
+function onKill(event)
+    local ctx = event.context
+    if not ctx then return end
+    
+    local attacker = { uuid = ctx.attackerId }
+    
+    -- 처치 시 보강 획득
+    local currentFortify = sanctuary.getFortify(attacker)
+    sanctuary.addFortify(attacker, FORTIFY_PER_HIT)
+    
+    sanctuary.log("적 처치! 보강: " .. currentFortify .. " -> " .. sanctuary.getFortify(attacker))
+end
+
+-- 피해 적용 직전 호출 (피해량 수정 가능)
+function onBeforeDamage(context)
+    -- 예: 보호막이 있으면 피해 10% 감소
+    local target = { uuid = context.victimId }
+    
+    if sanctuary.hasBarrier(target) then
+        return { damageMultiplier = 0.9 }
+    end
+    
+    return nil
+end
+
+-- 피해 적용 직후 호출
+function onAfterDamage(context, finalDamage)
+    -- 예: 피해 로그
+    sanctuary.log("피해 적용 완료: " .. finalDamage)
+end
+
+--------------------------------------------------------------------------------
+-- 유틸리티 함수
+--------------------------------------------------------------------------------
+
+-- 엔티티 체력 비율 확인
+function getHealthPercent(entity)
+    local current = sanctuary.getHealth(entity)
+    local max = sanctuary.getMaxHealth(entity)
+    if max == 0 then return 0 end
+    return (current / max) * 100
+end
+
+-- 보강 활성화 상태 확인 (D4: 보강 >= 현재 체력)
+function checkFortifyActive(entity)
+    return sanctuary.isFortified(entity)
+end
+
+-- 긴급 보호막 활성화 (체력 20% 이하 시)
+function emergencyBarrier(entity)
+    local hpPercent = getHealthPercent(entity)
+    if hpPercent <= 20 and not sanctuary.hasBarrier(entity) then
+        local maxHp = sanctuary.getMaxHealth(entity)
+        sanctuary.addBarrier(entity, maxHp * 0.3)  -- 최대 체력의 30% 보호막
+        sanctuary.playSound(entity, "BLOCK_ENCHANTMENT_TABLE_USE")
+        sanctuary.spawnParticle(entity, "END_ROD", 30)
+        return true
+    end
+    return false
+end
+
+--------------------------------------------------------------------------------
+-- 스킬 효과 예제
+--------------------------------------------------------------------------------
+
+-- 화염구 효과
+function fireballEffect(caster, target, skillData)
+    -- 화염 파티클
+    sanctuary.spawnParticle(target, "FLAME", 20)
+    sanctuary.playSound(target, "ITEM_FIRECHARGE_USE")
+    
+    -- 취약 태그 추가 (3초 후 자동 제거는 Java에서 처리)
     sanctuary.addTag(target, "VULNERABLE")
-    sanctuary.setTimer(target, "VULNERABLE_EXPIRE", actualDuration, function()
-        removeVulnerable(target)
-    end)
     
-    -- 시각 효과
-    sanctuary.playParticle(target, "SPELL_WITCH", 20)
-    sanctuary.log("[Vulnerable] 취약 상태 적용: " .. actualDuration .. "ms")
-end
-
--- 취약 상태 제거
-function removeVulnerable(target)
-    sanctuary.removeTag(target, "VULNERABLE")
-    sanctuary.log("[Vulnerable] 취약 상태 종료")
-end
-
--- 취약 상태 확인
-function isVulnerable(target)
-    return sanctuary.hasTag(target, "VULNERABLE")
-end
-
--- ===================================
--- 보강 (Fortify) 시스템
--- ===================================
-local FORTIFY_DECAY_RATE = 2 -- 초당 감소량
-local FORTIFY_DR_BONUS = 0.15 -- 보강 상태에서 15% 피해 감소
-
--- 보강 수치 추가
-function addFortify(entity, amount)
-    local current = sanctuary.getStat(entity, "FORTIFY") or 0
-    local max = sanctuary.getStat(entity, "FORTIFY_MAX") or 500
-    
-    local newValue = math.min(current + amount, max)
-    sanctuary.setStat(entity, "FORTIFY", newValue)
-    
-    -- 보강 상태 확인 및 태그 갱신
-    local hp = sanctuary.getStat(entity, "HP") or 0
-    if newValue >= hp then
-        if not sanctuary.hasTag(entity, "FORTIFIED") then
-            sanctuary.addTag(entity, "FORTIFIED")
-            sanctuary.log("[Fortify] 보강 상태 활성화!")
-        end
-    end
-    
-    sanctuary.log("[Fortify] 보강 추가: +" .. amount .. " (현재: " .. newValue .. ")")
-    
-    return newValue
-end
-
--- 보강 수치 감소 (피격 시)
-function consumeFortify(entity, damage)
-    local current = sanctuary.getStat(entity, "FORTIFY") or 0
-    if current <= 0 then return damage end
-    
-    -- 보강 상태 피해 감소
-    if sanctuary.hasTag(entity, "FORTIFIED") then
-        damage = damage * (1 - FORTIFY_DR_BONUS)
-    end
-    
-    -- 보강 수치 감소 (피해량의 절반)
-    local consumed = math.min(current, damage * 0.5)
-    local newValue = current - consumed
-    sanctuary.setStat(entity, "FORTIFY", newValue)
-    
-    -- 보강 상태 해제 확인
-    local hp = sanctuary.getStat(entity, "HP") or 0
-    if newValue < hp then
-        sanctuary.removeTag(entity, "FORTIFIED")
-    end
-    
-    return damage
-end
-
--- 보강 자연 감소 (틱당 호출)
-function decayFortify(entity)
-    local current = sanctuary.getStat(entity, "FORTIFY") or 0
-    if current <= 0 then return end
-    
-    local newValue = math.max(0, current - FORTIFY_DECAY_RATE)
-    sanctuary.setStat(entity, "FORTIFY", newValue)
-    
-    -- 보강 상태 해제 확인
-    local hp = sanctuary.getStat(entity, "HP") or 0
-    if newValue < hp then
-        sanctuary.removeTag(entity, "FORTIFIED")
+    -- 보호막 제거
+    if sanctuary.hasBarrier(target) then
+        local barrier = sanctuary.getBarrier(target)
+        sanctuary.setBarrier(target, barrier * 0.5)  -- 보호막 50% 감소
     end
 end
 
--- ===================================
--- 보호막 (Barrier) 시스템
--- ===================================
-local BARRIER_MAX_DURATION = 10000 -- 10초
-
--- 보호막 생성
-function addBarrier(entity, amount, duration)
-    local current = sanctuary.getStat(entity, "BARRIER") or 0
-    local newValue = current + amount
+-- 회오리 바람 효과 (야만용사)
+function whirlwindEffect(caster, targets, skillData)
+    -- 시전자 파티클
+    sanctuary.spawnParticle(caster, "SWEEP_ATTACK", 10)
     
-    sanctuary.setStat(entity, "BARRIER", newValue)
-    sanctuary.addTag(entity, "HAS_BARRIER")
-    
-    -- 시각 효과
-    sanctuary.playParticle(entity, "ENCHANT", 30)
-    
-    -- 지속시간 후 제거
-    local actualDuration = duration or BARRIER_MAX_DURATION
-    sanctuary.setTimer(entity, "BARRIER_EXPIRE", actualDuration, function()
-        expireBarrier(entity, amount)
-    end)
-    
-    sanctuary.log("[Barrier] 보호막 생성: +" .. amount .. " (현재: " .. newValue .. ")")
-    
-    return newValue
-end
-
--- 보호막 소모 (피격 시)
-function consumeBarrier(entity, damage)
-    local current = sanctuary.getStat(entity, "BARRIER") or 0
-    if current <= 0 then return damage end
-    
-    -- 보호막이 피해 흡수
-    if current >= damage then
-        -- 보호막이 모든 피해 흡수
-        sanctuary.setStat(entity, "BARRIER", current - damage)
-        sanctuary.log("[Barrier] 보호막이 " .. damage .. " 피해 흡수")
-        return 0
-    else
-        -- 보호막 파괴, 남은 피해 전달
-        local remainingDamage = damage - current
-        sanctuary.setStat(entity, "BARRIER", 0)
-        sanctuary.removeTag(entity, "HAS_BARRIER")
-        sanctuary.log("[Barrier] 보호막 파괴! 남은 피해: " .. remainingDamage)
-        return remainingDamage
+    -- 각 타겟에 효과 적용
+    for i, target in ipairs(targets) do
+        sanctuary.spawnParticle(target, "CRIT", 5)
     end
 end
 
--- 보호막 만료
-function expireBarrier(entity, amount)
-    local current = sanctuary.getStat(entity, "BARRIER") or 0
-    local newValue = math.max(0, current - amount)
-    sanctuary.setStat(entity, "BARRIER", newValue)
+-- 보호막 스킬 (원소술사)
+function barrierSkill(caster, skillData)
+    local maxHp = sanctuary.getMaxHealth(caster)
+    local barrierAmount = maxHp * 0.4 * BARRIER_DURATION_BONUS
     
-    if newValue <= 0 then
-        sanctuary.removeTag(entity, "HAS_BARRIER")
-    end
+    sanctuary.addBarrier(caster, barrierAmount)
+    sanctuary.spawnParticle(caster, "END_ROD", 50)
+    sanctuary.playSound(caster, "BLOCK_BEACON_ACTIVATE")
     
-    sanctuary.log("[Barrier] 보호막 만료: -" .. amount)
+    return barrierAmount
 end
 
--- ===================================
--- 행운의 적중 (Lucky Hit) 시스템
--- ===================================
-
--- 행운의 적중 확인
--- 실제 발동 확률 = 스킬 계수 × (1 + 행운의 적중 보너스) × 효과 확률
-function checkLuckyHit(caster, skillCoefficient, effectChance)
-    local luckyHitBonus = sanctuary.getStat(caster, "LUCKY_HIT") or 0
-    local actualChance = skillCoefficient * (1 + luckyHitBonus) * effectChance
-    
-    local result = math.random() < actualChance
-    
-    if result then
-        sanctuary.log("[Lucky Hit] 행운의 적중 발동! (확률: " .. 
-                      string.format("%.1f", actualChance * 100) .. "%)")
-    end
-    
-    return result
-end
-
--- 행운의 적중: 자원 회복
-function luckyHitResourceRestore(caster, skillCoefficient, restoreAmount)
-    if checkLuckyHit(caster, skillCoefficient, 0.10) then
-        local resourceType = sanctuary.getStat(caster, "RESOURCE_TYPE") or "MANA"
-        local current = sanctuary.getStat(caster, resourceType) or 0
-        local max = sanctuary.getStat(caster, resourceType .. "_MAX") or 100
-        
-        local newValue = math.min(current + restoreAmount, max)
-        sanctuary.setStat(caster, resourceType, newValue)
-        
-        sanctuary.log("[Lucky Hit] 자원 회복: +" .. restoreAmount)
-    end
-end
-
--- 행운의 적중: 생명력 회복
-function luckyHitHealRestore(caster, skillCoefficient, healPercent)
-    if checkLuckyHit(caster, skillCoefficient, 0.05) then
-        local maxHP = sanctuary.getStat(caster, "MAX_HP") or 100
-        local healAmount = maxHP * healPercent
-        
-        local currentHP = sanctuary.getStat(caster, "HP") or 0
-        local newHP = math.min(currentHP + healAmount, maxHP)
-        sanctuary.setStat(caster, "HP", newHP)
-        
-        sanctuary.log("[Lucky Hit] 생명력 회복: +" .. math.floor(healAmount))
-    end
-end
-
--- ===================================
--- 군중 제어 (Crowd Control) 시스템
--- ===================================
-
--- 기절 적용
-function applyStun(target, duration)
-    sanctuary.addTag(target, "STUNNED")
-    sanctuary.applyEffect(target, "SLOWNESS", 255, duration)
-    sanctuary.applyEffect(target, "JUMP_BOOST", 128, duration)
-    
-    sanctuary.setTimer(target, "STUN_EXPIRE", duration, function()
-        sanctuary.removeTag(target, "STUNNED")
-    end)
-    
-    sanctuary.playParticle(target, "CRIT", 15)
-    sanctuary.log("[CC] 기절 적용: " .. duration .. "ms")
-end
-
--- 빙결 적용
-function applyFreeze(target, duration)
-    sanctuary.addTag(target, "FROZEN")
-    sanctuary.applyEffect(target, "SLOWNESS", 255, duration)
-    sanctuary.applyEffect(target, "JUMP_BOOST", 128, duration)
-    
-    sanctuary.setTimer(target, "FREEZE_EXPIRE", duration, function()
-        sanctuary.removeTag(target, "FROZEN")
-    end)
-    
-    sanctuary.playParticle(target, "SNOW_SHOVEL", 30)
-    sanctuary.log("[CC] 빙결 적용: " .. duration .. "ms")
-end
-
--- 감속 적용
-function applySlow(target, level, duration)
-    sanctuary.addTag(target, "SLOWED")
-    sanctuary.applyEffect(target, "SLOWNESS", level, duration)
-    
-    sanctuary.setTimer(target, "SLOW_EXPIRE", duration, function()
-        sanctuary.removeTag(target, "SLOWED")
-    end)
-    
-    sanctuary.log("[CC] 감속 적용: 레벨 " .. level .. ", " .. duration .. "ms")
-end
-
--- ===================================
--- 피격 처리 (메인 함수)
--- ===================================
-function onDamageReceived(target, damage, damageType, attacker)
-    local finalDamage = damage
-    
-    -- 1. 보호막 소모
-    if sanctuary.hasTag(target, "HAS_BARRIER") then
-        finalDamage = consumeBarrier(target, finalDamage)
-        if finalDamage <= 0 then
-            return 0
-        end
-    end
-    
-    -- 2. 보강 효과 적용
-    if sanctuary.getStat(target, "FORTIFY") > 0 then
-        finalDamage = consumeFortify(target, finalDamage)
-    end
-    
-    -- 3. 방어력/저항 감소는 damage_calculator에서 처리
-    
-    return finalDamage
-end
-
-sanctuary.log("combat_effects.lua 로드 완료!")
+sanctuary.log("[combat_effects.lua] 로드 완료")

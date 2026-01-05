@@ -203,4 +203,32 @@ public class ItemFactory {
     private int calculateRequiredLevel(int itemPower) {
         return Math.max(1, itemPower / 10);
     }
+
+    /**
+     * RpgItemData를 기반으로 ItemStack을 생성합니다.
+     */
+    public ItemStack createFromData(RpgItemData data) {
+        if (data == null)
+            return null;
+
+        ItemBaseData baseData = dataRepository.getItemBase(data.getTemplateId());
+        // 템플릿 정보가 없으면 기본 재질 사용 (Fallback)
+        Material material = Material.IRON_SWORD;
+        if (baseData != null && baseData.getMaterial() != null) {
+            Material mat = Material.getMaterial(baseData.getMaterial());
+            if (mat != null) {
+                material = mat;
+            }
+        }
+
+        ItemStack item = new ItemStack(material);
+
+        // PDC에 데이터 저장
+        serializer.write(item, data);
+
+        // Lore 적용
+        loreGenerator.applyLore(item, data);
+
+        return item;
+    }
 }

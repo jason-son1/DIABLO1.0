@@ -5,26 +5,49 @@ import com.sanctuary.core.ecs.EntityManager;
 import com.sanctuary.core.ecs.SanctuaryEntity;
 import com.sanctuary.core.ecs.component.IdentityComponent;
 import com.sanctuary.core.model.ItemBaseData;
+import com.sanctuary.core.script.ScriptEngine;
 import org.bukkit.entity.Player;
+import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 /**
- * 스마트 룻 시스템 - 플레이어 직업에 맞는 아이템을 우선 드롭합니다.
+ * 스마트 룻 시스템 - 플레이어 직업/레벨에 맞는 아이템을 우선 드롭합니다.
  * 디아블로 IV의 스마트 룻 시스템을 구현합니다.
+ * 
+ * 기능:
+ * - 직업별 아이템 타입 가중치 (85% 스마트 룻 확률)
+ * - 플레이어 레벨 기반 아이템 파워 계산
+ * - 월드 티어별 보너스
+ * - Lua 스크립트 오버라이드 지원
  */
 public class SmartLootManager {
 
     private final DataRepository dataRepository;
     private final EntityManager entityManager;
     private final Logger logger;
+    private ScriptEngine scriptEngine;
 
     // 직업별 어울리는 아이템 타입 (스마트 룻 가중치 부여)
     private static final Map<String, Set<String>> CLASS_ITEM_PREFERENCES = new HashMap<>();
 
     // 직업에 맞는 아이템 드롭 확률 증가 배수
     private static final double SMART_LOOT_BONUS = 0.85; // 85%
+
+    // 레벨당 아이템 파워 증가량
+    private static final int BASE_ITEM_POWER = 100;
+    private static final int ITEM_POWER_PER_LEVEL = 15;
+
+    // 월드 티어 보정 (디아블로 4)
+    private static final Map<Integer, Double> WORLD_TIER_MULTIPLIERS = Map.of(
+            1, 1.0, // 월드 티어 1: 어드벤처
+            2, 1.25, // 월드 티어 2: 베테랑
+            3, 1.5, // 월드 티어 3: 악몽
+            4, 2.0 // 월드 티어 4: 고문
+    );
 
     static {
         // 전사 계열
@@ -48,15 +71,15 @@ public class SmartLootManager {
                 "SCYTHE", "WAND", "FOCUS", "SHIELD",
                 "CLOTH_ARMOR", "HELM", "GLOVES", "BOOTS", "PANTS"));
 
-        // 성기사 계열
+        // 드루이드 계열
         CLASS_ITEM_PREFERENCES.put("DRUID", Set.of(
                 "STAFF", "TWO_HANDED_MACE", "TOTEM",
                 "MEDIUM_ARMOR", "HELM", "GLOVES", "BOOTS", "PANTS"));
 
-        // 성전사 계열
-        CLASS_ITEM_PREFERENCES.put("CRUSADER", Set.of(
-                "ONE_HANDED_SWORD", "ONE_HANDED_MACE", "SHIELD", "FLAIL",
-                "HEAVY_ARMOR", "HELM", "GLOVES", "BOOTS", "PANTS"));
+        // 혼령사 계열 (시즌 6)
+        CLASS_ITEM_PREFERENCES.put("SPIRITBORN", Set.of(
+                "GLAIVE", "QUARTERSTAFF", "FOCUS",
+                "MEDIUM_ARMOR", "HELM", "GLOVES", "BOOTS", "PANTS"));
     }
 
     public SmartLootManager(DataRepository dataRepository, EntityManager entityManager, Logger logger) {
@@ -66,10 +89,14 @@ public class SmartLootManager {
     }
 
     /**
+     * Lua 스크립트 엔진을 설정합니다.
+     */
+    public void setScriptEngine(ScriptEngine scriptEngine) {
+        this.scriptEngine = scriptEngine;
+    }
+
+    /**
      * 플레이어 직업을 감지합니다.
-     *
-     * @param player 플레이어
-     * @return 직업 이름 (없으면 null)
      */
     public String detectPlayerClass(Player player) {
         SanctuaryEntity entity = entityManager.get(player);
@@ -83,14 +110,70 @@ public class SmartLootManager {
     }
 
     /**
+     * 플레이어 레벨을 감지합니다.
+     */
+    public int detectPlayerLevel(Player player) {
+        SanctuaryEntity entity = entityManager.get(player);
+        if (entity == null) {
+            return player.getLevel(); // 바닐라 레벨 폴백
+        }
+
+        return entity.getComponentOptional(IdentityComponent.class)
+                .map(IdentityComponent::getLevel)
+                .orElse(player.getLevel());
+    }
+
+    /**
+     * 플레이어 월드 티어를 감지합니다.
+     */
+    public int detectWorldTier(Player player) {
+        // TODO: 월드 티어 시스템 구현 후 연동
+        // 현재는 기본 티어 1 반환
+        return 1;
+    }
+
+    /**
+     * 플레이어 레벨과 월드 티어에 맞는 아이템 파워를 계산합니다.
+     */
+    public int calculateItemPower(Player player) {
+        int level = detectPlayerLevel(player);
+        int worldTier = detectWorldTier(player);
+
+        double tierMultiplier = WORLD_TIER_MULTIPLIERS.getOrDefault(worldTier, 1.0);
+        int basePower = BASE_ITEM_POWER + (level * ITEM_POWER_PER_LEVEL);
+
+        // ±10% 랜덤 변동
+        double variance = 0.9 + (ThreadLocalRandom.current().nextDouble() * 0.2);
+
+        return (int) (basePower * tierMultiplier * variance);
+    }
+
+    /**
      * 스마트 룻을 적용하여 아이템 템플릿 풀을 조정합니다.
-     *
-     * @param player   플레이어
-     * @param allItems 사용 가능한 모든 아이템 템플릿
-     * @return 가중치가 조정된 템플릿 목록
      */
     public List<WeightedTemplate> applySmartLoot(Player player, Collection<ItemBaseData> allItems) {
         String playerClass = detectPlayerClass(player);
+        int playerLevel = detectPlayerLevel(player);
+
+        // Lua 오버라이드 체크
+        if (scriptEngine != null) {
+            try {
+                LuaTable context = new LuaTable();
+                context.set("playerUuid", player.getUniqueId().toString());
+                context.set("playerClass", LuaValue.valueOf(playerClass != null ? playerClass : "NONE"));
+                context.set("playerLevel", playerLevel);
+
+                LuaValue result = scriptEngine.callFunction("smart_loot_override", context);
+                if (result != null && result.istable()) {
+                    // Lua에서 반환한 가중치 사용
+                    return parseLuaWeights(result.checktable());
+                }
+            } catch (Exception e) {
+                // Lua 오버라이드 실패 - 기본 로직 사용
+                logger.fine("[SmartLoot] Lua 오버라이드 없음, 기본 로직 사용");
+            }
+        }
+
         if (playerClass == null) {
             // 직업이 없으면 균등 가중치
             return allItems.stream()
@@ -118,12 +201,21 @@ public class SmartLootManager {
         return result;
     }
 
+    private List<WeightedTemplate> parseLuaWeights(LuaTable table) {
+        List<WeightedTemplate> result = new ArrayList<>();
+        for (LuaValue key : table.keys()) {
+            LuaValue entry = table.get(key);
+            if (entry.istable()) {
+                String templateId = entry.get("templateId").tojstring();
+                int weight = entry.get("weight").toint();
+                result.add(new WeightedTemplate(templateId, weight));
+            }
+        }
+        return result;
+    }
+
     /**
      * 스마트 룻이 적용된 랜덤 템플릿을 선택합니다.
-     *
-     * @param player    플레이어
-     * @param itemTypes 사용할 아이템 타입 필터 (null이면 전체)
-     * @return 선택된 템플릿 ID
      */
     public String rollSmartTemplate(Player player, Set<String> itemTypes) {
         Collection<ItemBaseData> allItems = dataRepository.getAllItemBases();
@@ -158,8 +250,30 @@ public class SmartLootManager {
     }
 
     /**
+     * 완전한 스마트 룻 결과를 반환합니다.
+     */
+    public SmartLootResult rollSmartLoot(Player player, Set<String> itemTypes) {
+        String templateId = rollSmartTemplate(player, itemTypes);
+        int itemPower = calculateItemPower(player);
+        int playerLevel = detectPlayerLevel(player);
+        String playerClass = detectPlayerClass(player);
+
+        return new SmartLootResult(templateId, itemPower, playerLevel, playerClass);
+    }
+
+    /**
      * 가중치가 부여된 템플릿을 나타냅니다.
      */
     public record WeightedTemplate(String templateId, int weight) {
+    }
+
+    /**
+     * 스마트 룻 결과를 나타냅니다.
+     */
+    public record SmartLootResult(
+            String templateId,
+            int itemPower,
+            int playerLevel,
+            String playerClass) {
     }
 }

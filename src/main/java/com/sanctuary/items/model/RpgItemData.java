@@ -1,7 +1,9 @@
 package com.sanctuary.items.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -35,7 +37,20 @@ public class RpgItemData {
 
     // ===== 전설 위상 =====
     private String aspectId; // 위상 ID
-    private double aspectValue; // 위상 수치
+    private double aspectValue; // 위상 수치 (단일 값, 하위 호환)
+    private Map<String, Double> aspectValues; // 위상 수치 (Map 형태)
+
+    // ===== 아이템 메타 =====
+    private String slotType; // 장착 슬롯 (WEAPON, CHESTPLATE, RING 등)
+    private String itemId; // 아이템 식별자 (AspectManager에서 사용)
+
+    // ===== 유니크 스크립트 (고유 아이템 효과) =====
+    private String onEquipScript; // 장착 시 실행 Lua 함수명
+    private String onUnequipScript; // 해제 시 실행 Lua 함수명
+    private String onHitScript; // 피해 적중 시 실행 Lua 함수명
+    private String onTakeDamageScript; // 피격 시 실행 Lua 함수명
+    private String onKillScript; // 처치 시 실행 Lua 함수명
+    private String uniqueEffectId; // 고유 효과 ID (선택적)
 
     // ===== 소켓 =====
     private int socketCount; // 소켓 개수
@@ -54,6 +69,7 @@ public class RpgItemData {
         this.tempering = new TemperingData();
         this.masterworking = new MasterworkingData();
         this.socketedGems = new ArrayList<>();
+        this.aspectValues = new HashMap<>();
         this.createdAt = System.currentTimeMillis();
     }
 
@@ -212,6 +228,90 @@ public class RpgItemData {
 
     public void setAspectValue(double aspectValue) {
         this.aspectValue = aspectValue;
+    }
+
+    public Map<String, Double> getAspectValues() {
+        return aspectValues;
+    }
+
+    public void setAspectValues(Map<String, Double> aspectValues) {
+        this.aspectValues = aspectValues != null ? aspectValues : new HashMap<>();
+    }
+
+    public String getSlotType() {
+        return slotType;
+    }
+
+    public void setSlotType(String slotType) {
+        this.slotType = slotType;
+    }
+
+    public String getItemId() {
+        return itemId != null ? itemId : uuid;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    // ===== 유니크 스크립트 Getters & Setters =====
+
+    public String getOnEquipScript() {
+        return onEquipScript;
+    }
+
+    public void setOnEquipScript(String onEquipScript) {
+        this.onEquipScript = onEquipScript;
+    }
+
+    public String getOnUnequipScript() {
+        return onUnequipScript;
+    }
+
+    public void setOnUnequipScript(String onUnequipScript) {
+        this.onUnequipScript = onUnequipScript;
+    }
+
+    public String getOnHitScript() {
+        return onHitScript;
+    }
+
+    public void setOnHitScript(String onHitScript) {
+        this.onHitScript = onHitScript;
+    }
+
+    public String getOnTakeDamageScript() {
+        return onTakeDamageScript;
+    }
+
+    public void setOnTakeDamageScript(String onTakeDamageScript) {
+        this.onTakeDamageScript = onTakeDamageScript;
+    }
+
+    public String getOnKillScript() {
+        return onKillScript;
+    }
+
+    public void setOnKillScript(String onKillScript) {
+        this.onKillScript = onKillScript;
+    }
+
+    public String getUniqueEffectId() {
+        return uniqueEffectId;
+    }
+
+    public void setUniqueEffectId(String uniqueEffectId) {
+        this.uniqueEffectId = uniqueEffectId;
+    }
+
+    /**
+     * 유니크 스크립트가 설정되어 있는지 확인합니다.
+     */
+    public boolean hasUniqueScript() {
+        return (onEquipScript != null && !onEquipScript.isBlank()) ||
+                (onHitScript != null && !onHitScript.isBlank()) ||
+                (onTakeDamageScript != null && !onTakeDamageScript.isBlank()) ||
+                (onKillScript != null && !onKillScript.isBlank());
     }
 
     public int getSocketCount() {

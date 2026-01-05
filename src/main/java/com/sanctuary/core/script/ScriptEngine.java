@@ -122,6 +122,41 @@ public class ScriptEngine {
     }
 
     /**
+     * 전역 함수를 직접 호출합니다. (스크립트 로드 없이)
+     * 
+     * @param functionName 호출할 함수 이름
+     * @param args         함수에 전달할 인자들
+     * @return 함수 반환값 또는 NIL
+     */
+    public LuaValue callFunction(String functionName, LuaValue... args) {
+        try {
+            LuaValue func = globals.get(functionName);
+            if (func.isnil()) {
+                logger.fine("[ScriptEngine] 함수를 찾을 수 없습니다: " + functionName);
+                return LuaValue.NIL;
+            }
+
+            // 인자 개수에 따라 호출
+            switch (args.length) {
+                case 0:
+                    return func.call();
+                case 1:
+                    return func.call(args[0]);
+                case 2:
+                    return func.call(args[0], args[1]);
+                case 3:
+                    return func.call(args[0], args[1], args[2]);
+                default:
+                    Varargs varargs = LuaValue.varargsOf(args);
+                    return func.invoke(varargs).arg1();
+            }
+        } catch (LuaError e) {
+            logger.warning("[ScriptEngine] 함수 호출 오류 (" + functionName + "): " + e.getMessage());
+            return LuaValue.NIL;
+        }
+    }
+
+    /**
      * 모든 스크립트 캐시를 초기화하고 리로드합니다.
      */
     public void reloadAll() {

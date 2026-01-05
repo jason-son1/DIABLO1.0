@@ -27,8 +27,42 @@ commands:
     aliases: [bt]
     usage: "/bridgetest <status|sync|bossbar|damage|hud>"
     permission: sanctuary.admin
+  aspecttest:
+    description: "위상(Aspect) 시스템 테스트 명령어"
+    aliases: [at]
+    usage: "/aspecttest <list|add|info|clear>"
+    permission: sanctuary.admin
+  blacksmith:
+    description: "대장간 - 담금질/명품화"
+    aliases: [bs, forge]
+    usage: "/blacksmith"
+    permission: sanctuary.use
+  skilltree:
+    description: "스킬 트리 관리"
+    aliases: [st, skill]
+    usage: "/skilltree <info|invest|refund|reset|list|addpoints>"
+    permission: sanctuary.use
+  paragon:
+    description: "정복자 보드 관리"
+    aliases: [pg, para]
+    usage: "/paragon <info|activate|board|nodes|addpoints|reset>"
+    permission: sanctuary.use
+  dungeon:
+    description: "인스턴스 던전 관리"
+    aliases: [dg, dun]
+    usage: "/dungeon <create|enter|leave|info|list>"
+    permission: sanctuary.use
+  helltide:
+    description: "지옥물결 관리"
+    aliases: [ht]
+    usage: "/helltide <start|end|status|zones>"
+    permission: sanctuary.admin
 
 permissions:
   sanctuary.admin:
     description: "Sanctuary 관리자 명령어 권한"
     default: op
+  sanctuary.use:
+    description: "Sanctuary 일반 사용 권한"
+    default: true
+

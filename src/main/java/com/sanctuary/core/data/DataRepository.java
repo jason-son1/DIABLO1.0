@@ -1,6 +1,7 @@
 package com.sanctuary.core.data;
 
 import com.sanctuary.core.model.AffixData;
+import com.sanctuary.core.model.AspectData;
 import com.sanctuary.core.model.ItemBaseData;
 import com.sanctuary.core.model.StatData;
 import java.util.Collection;
@@ -45,4 +46,14 @@ public interface DataRepository {
      * 모든 아이템 기본 데이터를 반환합니다.
      */
     Collection<ItemBaseData> getAllItemBases();
+
+    /**
+     * ID로 위상(Aspect) 데이터를 조회합니다.
+     */
+    AspectData getAspect(String id);
+
+    /**
+     * 모든 위상 데이터를 반환합니다.
+     */
+    Collection<AspectData> getAllAspects();
 }

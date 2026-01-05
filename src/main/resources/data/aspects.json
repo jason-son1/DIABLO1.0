@@ -1,217 +1,262 @@
-[
-    {
-        "id": "ASPECT_OF_THE_PROTECTOR",
-        "name": "수호자의 위상",
-        "category": "DEFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "CHESTPLATE",
-            "HELMET",
-            "LEGGINGS",
-            "BOOTS"
-        ],
-        "description": "정예 또는 보스 몬스터 타격 시 10초 동안 보호막 생성",
-        "effect": {
-            "type": "BARRIER_ON_ELITE_HIT",
-            "barrierAmount": {
-                "min": 100,
-                "max": 250
+{
+    "aspects": [
+        {
+            "id": "aspect_of_the_protector",
+            "name": "수호자의 위상",
+            "category": "DEFENSIVE",
+            "description": "엘리트 처치 시 보호막 {shieldAmount} 획득",
+            "allowedSlots": [
+                "AMULET",
+                "CHEST",
+                "HELMET",
+                "PANTS"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "shieldAmount": {
+                    "min": 100,
+                    "max": 500
+                }
             },
-            "duration": 10000,
-            "cooldown": 30000
+            "source": "Dungeon: Forgotten Tomb"
         },
-        "source": "힘의 전서 - 잊혀진 지하실"
-    },
-    {
-        "id": "ASPECT_OF_DISOBEDIENCE",
-        "name": "불복의 위상",
-        "category": "DEFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "CHESTPLATE",
-            "HELMET",
-            "LEGGINGS",
-            "BOOTS"
-        ],
-        "description": "피해를 입힐 때마다 4초 동안 방어력 증가 (중첩 가능, 최대 25%)",
-        "effect": {
-            "type": "ARMOR_ON_DAMAGE",
-            "armorPerStack": {
-                "min": 0.01,
-                "max": 0.03
+        {
+            "id": "aspect_of_disobedience",
+            "name": "불복종의 위상",
+            "category": "DEFENSIVE",
+            "description": "피해를 입힐 때마다 방어력 {armorBonus}% 증가 (최대 25%, 4초 지속)",
+            "allowedSlots": [
+                "HELMET",
+                "CHEST",
+                "PANTS",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "armorBonus": {
+                    "min": 0.25,
+                    "max": 0.5
+                }
             },
-            "maxStacks": 25,
-            "duration": 4000
+            "source": "Dungeon: Halls of the Damned"
         },
-        "source": "힘의 전서 - 셰코렌의 봉인된 묘지"
-    },
-    {
-        "id": "ASPECT_OF_THE_EXPECTANT",
-        "name": "대망의 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "기본 스킬로 적을 공격하면 다음 핵심 스킬의 피해가 증가",
-        "effect": {
-            "type": "CORE_DAMAGE_AFTER_BASIC",
-            "damagePerStack": {
-                "min": 0.05,
-                "max": 0.10
+        {
+            "id": "aspect_of_inner_calm",
+            "name": "내면의 평화 위상",
+            "category": "OFFENSIVE",
+            "description": "정지 중 매초 피해 {damageBonus}% 증가 (최대 30%)",
+            "allowedSlots": [
+                "RING",
+                "GLOVES",
+                "WEAPON",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "damageBonus": {
+                    "min": 3,
+                    "max": 5
+                }
             },
-            "maxStacks": 5
+            "source": "Dungeon: Raethwind Wilds"
         },
-        "source": "힘의 전서 - 언더로트"
-    },
-    {
-        "id": "ASPECT_OF_INNER_CALM",
-        "name": "내면의 평온 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "정지 상태에서 매초마다 피해가 증가 (최대 3초)",
-        "effect": {
-            "type": "DAMAGE_WHILE_STATIONARY",
-            "damagePerSecond": {
-                "min": 0.05,
-                "max": 0.10
+        {
+            "id": "aspect_of_retribution",
+            "name": "응보의 위상",
+            "category": "OFFENSIVE",
+            "description": "피격 시 {procChance}% 확률로 공격자에게 {reflectDamage}% 피해 반사",
+            "allowedSlots": [
+                "RING",
+                "WEAPON",
+                "GLOVES"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "procChance": {
+                    "min": 15,
+                    "max": 25
+                },
+                "reflectDamage": {
+                    "min": 20,
+                    "max": 40
+                }
             },
-            "maxDuration": 3000
+            "source": "Dungeon: Abandoned Mine"
         },
-        "source": "힘의 전서 - 폭풍의 늑대 은신처"
-    },
-    {
-        "id": "ASPECT_OF_MIGHT",
-        "name": "힘의 위상",
-        "category": "DEFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "CHESTPLATE",
-            "HELMET",
-            "LEGGINGS",
-            "BOOTS"
-        ],
-        "description": "기본 스킬 사용 시 4초 동안 받는 피해 감소",
-        "effect": {
-            "type": "DAMAGE_REDUCTION_ON_BASIC",
-            "reduction": {
-                "min": 0.15,
-                "max": 0.25
+        {
+            "id": "aspect_of_the_expectant",
+            "name": "기대의 위상",
+            "category": "OFFENSIVE",
+            "description": "기본 스킬 공격 시 다음 핵심 스킬 피해 {damageBonus}% 증가 (최대 5스택)",
+            "allowedSlots": [
+                "GLOVES",
+                "RING",
+                "WEAPON"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "damageBonus": {
+                    "min": 5,
+                    "max": 10
+                }
             },
-            "duration": 4000
+            "source": "Dungeon: Underroot"
         },
-        "source": "힘의 전서 - 어둠의 약탈자 은신처"
-    },
-    {
-        "id": "ASPECT_OF_RETRIBUTION",
-        "name": "응보의 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "원거리 적에게 피해를 입히면 원거리 적에게 주는 피해가 증가",
-        "effect": {
-            "type": "DAMAGE_TO_DISTANT_BONUS",
-            "damageBonus": {
-                "min": 0.15,
-                "max": 0.30
-            }
-        },
-        "source": "힘의 전서 - 시즐링 샌드"
-    },
-    {
-        "id": "ASPECT_OF_UNSTABLE_IMBUEMENTS",
-        "name": "불안정한 주입의 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "주입 스킬 사용 시 폭발을 일으켜 주변 적에게 피해",
-        "classRestriction": "ROGUE",
-        "effect": {
-            "type": "IMBUEMENT_EXPLOSION",
-            "explosionDamage": {
-                "min": 0.50,
-                "max": 0.80
+        {
+            "id": "edgemasters_aspect",
+            "name": "칼날장인의 위상",
+            "category": "OFFENSIVE",
+            "description": "기본 자원 만땅 시 스킬 피해 {maxBonus}% 증가, 자원 비어있을 때 최소 {minBonus}%",
+            "allowedSlots": [
+                "WEAPON",
+                "GLOVES",
+                "RING",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "maxBonus": {
+                    "min": 10,
+                    "max": 20
+                },
+                "minBonus": {
+                    "min": 0,
+                    "max": 0
+                }
             },
-            "explosionRadius": 4
+            "source": "Dungeon: Oldstones"
         },
-        "source": "힘의 전서 - 도적 던전"
-    },
-    {
-        "id": "ASPECT_OF_BERSERK_RIPPING",
-        "name": "광전사의 찢기 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "광폭화 상태에서 적에게 출혈을 입힘",
-        "classRestriction": "BARBARIAN",
-        "effect": {
-            "type": "BLEED_ON_BERSERK",
-            "bleedDamagePercent": {
-                "min": 0.20,
-                "max": 0.40
-            }
-        },
-        "source": "힘의 전서 - 얼어붙은 봉우리 던전"
-    },
-    {
-        "id": "ASPECT_OF_CONTROL",
-        "name": "지배의 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "저지 불능/기절/빙결 상태의 적에게 피해 증가",
-        "effect": {
-            "type": "DAMAGE_VS_CC",
-            "damageBonus": {
-                "min": 0.25,
-                "max": 0.40
-            }
-        },
-        "source": "힘의 전서 - 선테로스 와치타워"
-    },
-    {
-        "id": "ASPECT_OF_REANIMATION",
-        "name": "부활의 위상",
-        "category": "OFFENSIVE",
-        "allowedSlots": [
-            "AMULET",
-            "RING",
-            "GLOVES",
-            "WEAPON"
-        ],
-        "description": "해골이 10초 이상 활성화되면 피해가 증가",
-        "classRestriction": "NECROMANCER",
-        "effect": {
-            "type": "SKELETON_DAMAGE_OVER_TIME",
-            "damageBonus": {
-                "min": 0.20,
-                "max": 0.35
+        {
+            "id": "aspect_of_the_crowded_sage",
+            "name": "지혜로운 군중의 위상",
+            "category": "DEFENSIVE",
+            "description": "근처에 적이 {enemyCount}명 이상일 때 초당 최대 생명력 {healPercent}% 회복",
+            "allowedSlots": [
+                "HELMET",
+                "CHEST",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "enemyCount": {
+                    "min": 3,
+                    "max": 3
+                },
+                "healPercent": {
+                    "min": 1,
+                    "max": 3
+                }
             },
-            "activationTime": 10000
+            "source": "Dungeon: Path of the Blind"
         },
-        "source": "힘의 전서 - 공포의 지하묘지"
-    }
-]
+        {
+            "id": "aspect_of_unstable_imbuements",
+            "name": "불안정한 주입 위상",
+            "category": "OFFENSIVE",
+            "description": "주입 스킬 종료 시 {areaRadius}m 내 적에게 폭발 피해",
+            "allowedSlots": [
+                "GLOVES",
+                "RING",
+                "WEAPON"
+            ],
+            "classRestriction": "ROGUE",
+            "effect": {
+                "areaRadius": {
+                    "min": 3,
+                    "max": 5
+                },
+                "explosionDamage": {
+                    "min": 50,
+                    "max": 100
+                }
+            },
+            "source": "Dungeon: Whispering Vault"
+        },
+        {
+            "id": "aspect_of_berserk_ripping",
+            "name": "광폭 열상 위상",
+            "category": "OFFENSIVE",
+            "description": "광폭 상태에서 직접 피해 시 {bleedPercent}%의 출혈 부여",
+            "allowedSlots": [
+                "WEAPON",
+                "GLOVES",
+                "RING",
+                "AMULET"
+            ],
+            "classRestriction": "BARBARIAN",
+            "effect": {
+                "bleedPercent": {
+                    "min": 20,
+                    "max": 35
+                }
+            },
+            "source": "Dungeon: Mournfield"
+        },
+        {
+            "id": "aspect_of_control",
+            "name": "지배의 위상",
+            "category": "OFFENSIVE",
+            "description": "기절/동결/속박된 적에게 피해 {damageBonus}% 증가",
+            "allowedSlots": [
+                "WEAPON",
+                "GLOVES",
+                "RING",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "damageBonus": {
+                    "min": 25,
+                    "max": 40
+                }
+            },
+            "source": "Dungeon: Sunken Ruins"
+        },
+        {
+            "id": "ghostwalker_aspect",
+            "name": "유령보행자의 위상",
+            "category": "UTILITY",
+            "description": "무적 상태 진입 후 {duration}초간 이동 속도 {moveSpeedBonus}% 증가",
+            "allowedSlots": [
+                "BOOTS",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "duration": {
+                    "min": 4,
+                    "max": 4
+                },
+                "moveSpeedBonus": {
+                    "min": 10,
+                    "max": 25
+                }
+            },
+            "source": "Dungeon: Broken Bulwark"
+        },
+        {
+            "id": "aspect_of_might",
+            "name": "힘의 위상",
+            "category": "DEFENSIVE",
+            "description": "기본 스킬 적중 시 {duration}초간 받는 피해 {damageReduction}% 감소",
+            "allowedSlots": [
+                "HELMET",
+                "CHEST",
+                "PANTS",
+                "AMULET"
+            ],
+            "classRestriction": null,
+            "effect": {
+                "duration": {
+                    "min": 2,
+                    "max": 4
+                },
+                "damageReduction": {
+                    "min": 15,
+                    "max": 25
+                }
+            },
+            "source": "Dungeon: Dark Ravine"
+        }
+    ]
+}

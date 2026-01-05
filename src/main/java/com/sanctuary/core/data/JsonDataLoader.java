@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.sanctuary.core.model.AffixData;
+import com.sanctuary.core.model.AspectData;
 import com.sanctuary.core.model.ItemBaseData;
 import com.sanctuary.core.model.StatData;
 import java.io.File;
@@ -30,6 +31,7 @@ public class JsonDataLoader implements DataRepository {
     private final Map<String, StatData> statMap = new HashMap<>();
     private final Map<String, AffixData> affixMap = new HashMap<>();
     private final Map<String, ItemBaseData> itemBaseMap = new HashMap<>();
+    private final Map<String, AspectData> aspectMap = new HashMap<>();
 
     public JsonDataLoader(File pluginFolder, Logger logger) {
         this.dataFolder = new File(pluginFolder, "data");
@@ -42,6 +44,7 @@ public class JsonDataLoader implements DataRepository {
         statMap.clear();
         affixMap.clear();
         itemBaseMap.clear();
+        aspectMap.clear();
 
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
@@ -50,9 +53,12 @@ public class JsonDataLoader implements DataRepository {
         loadStats();
         loadAffixes();
         loadItemBases();
+        loadAspects();
 
-        logger.info("[SanctuaryCore] 데이터 로드 완료. Stats: " + statMap.size() + ", Affixes: " + affixMap.size()
-                + ", Items: " + itemBaseMap.size());
+        logger.info("[SanctuaryCore] 데이터 로드 완료. Stats: " + statMap.size() +
+                ", Affixes: " + affixMap.size() +
+                ", Items: " + itemBaseMap.size() +
+                ", Aspects: " + aspectMap.size());
     }
 
     private void loadStats() {
@@ -162,6 +168,27 @@ public class JsonDataLoader implements DataRepository {
         }
     }
 
+    private void loadAspects() {
+        File file = new File(dataFolder, "aspects.json");
+        if (!file.exists()) {
+            logger.info("[SanctuaryCore] aspects.json 파일이 없습니다. 위상 데이터는 비어있습니다.");
+            return;
+        }
+
+        try (Reader reader = new FileReader(file)) {
+            Type type = new TypeToken<List<AspectData>>() {
+            }.getType();
+            List<AspectData> aspects = gson.fromJson(reader, type);
+            if (aspects != null) {
+                for (AspectData aspect : aspects) {
+                    aspectMap.put(aspect.getId(), aspect);
+                }
+            }
+        } catch (IOException e) {
+            logger.severe("[SanctuaryCore] 위상 데이터 로드 실패: " + e.getMessage());
+        }
+    }
+
     @Override
     public StatData getStat(String id) {
         return statMap.get(id);
@@ -190,5 +217,15 @@ public class JsonDataLoader implements DataRepository {
     @Override
     public Collection<ItemBaseData> getAllItemBases() {
         return itemBaseMap.values();
+    }
+
+    @Override
+    public AspectData getAspect(String id) {
+        return aspectMap.get(id);
+    }
+
+    @Override
+    public Collection<AspectData> getAllAspects() {
+        return aspectMap.values();
     }
 }
